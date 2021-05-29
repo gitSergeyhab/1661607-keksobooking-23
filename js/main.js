@@ -43,3 +43,12 @@ const getRandomNumber = (min = 1, max = 10, afterPoint = 0) => {
 
 getRandomInt(1, 2);
 getRandomNumber(1, 2, 3);
+
+// ну или так:
+
+const getRandomNumber2 = (min = 1, max = 10, afterPoint = 0) => {
+  [min, max] = [Math.min(min, max), Math.max(min, max)];
+  return +(Math.random() * (max - min) + min).toFixed(afterPoint);
+};
+
+getRandomNumber2(1.1, 4.321, 3);
