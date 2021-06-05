@@ -3,7 +3,7 @@
 const getRandomInt = (min = 1, max = 10) => {
   [min, max] = [
     Math.min(Math.abs(min), Math.abs(max)),
-    Math.max(Math.abs(min), Math.abs(max))
+    Math.max(Math.abs(min), Math.abs(max)),
   ];
   return Math.round(Math.random() * (max - min) + min);
 };
@@ -12,16 +12,18 @@ const getRandomInt = (min = 1, max = 10) => {
 const getRandomNumber = (min = 1, max = 10, afterPoint = 0) => {
   [min, max] = [
     Math.min(Math.abs(min), Math.abs(max)),
-    Math.max(Math.abs(min), Math.abs(max))
+    Math.max(Math.abs(min), Math.abs(max)),
   ];
   return +(Math.random() * (max - min) + min).toFixed(afterPoint);
 };
 
+// ----------------------------------------------//
 
 //4.9. Больше деталей
 
 const SIMILAR_OFFER_COUNT = 10;
-const SIMILAR_AVATAR_COUNT = /*8*/ 10;
+
+// const SIMILAR_AVATAR_COUNT = 10;
 // avatar, строка — адрес изображения вида img/avatars/user{{xx}}.png,
 //где {{xx}} — это число от 1 до 8 с ведущим нулём.
 //Например, 01, 02 и т. д. Адреса изображений не повторяются.
@@ -31,24 +33,16 @@ const START_LAT = 35.65000;
 const FINISH_LAT = 35.70000;
 const START_LNG = 139.70000;
 const FINISH_LNG = 139.80000;
+const AFTER_POINT = 5;
+const PHOTO_COUNT = 7;
+const MIN_PRICE = 1000;
+const MAX_PRICE = 100000;
+const MAX_ROOMS = 10;
+const MAX_GUESTS = 1000;
 
-
-const offers = new Array(SIMILAR_OFFER_COUNT).fill(null);
-
-
-
-const authorAvatars = new Array(SIMILAR_AVATAR_COUNT).fill(null);
-authorAvatars.forEach((avatar, ind, array) => {
-  array[ind] = `img/avatars/user0${ind + 1}.png`;
-  // avatar = `img/avatars/user0${ind + 1}.png`;  ??? а так почему-то не сработало ???
-});
-
-// все offer.offer.title
-const offerTitles = new Array(SIMILAR_OFFER_COUNT).fill(null);
-offerTitles.forEach((element, ind, array) => {
-  array[ind] = `offer-title-${ind + 1}`;
-});
-
+const getAvatar = (index) => `img/avatars/user0${index + 1}.png`;
+const getTitle = (index) => `offer-title-${index + 1}`;
+const getDescription = (index) => `чрезвычайно обычное помещение № ${index + 1}`;
 
 const types = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const times = ['12:00', '13:00', '14:00'];
@@ -56,14 +50,14 @@ const protoFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'c
 const protoPhotos = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
 // новый массив из случайных элементов massiv
 const getSomeFeaturesMassiv = (massiv, repeat = false) => {
   const newMassiv = [];
   if (repeat) {
-    for (let i = 0; i < repeat; i++) {
+    for (let ind = 0; ind < repeat; ind++) {
       newMassiv.push(massiv[getRandomInt(0, massiv.length - 1)]);
     }
   } else {
@@ -77,32 +71,34 @@ const getSomeFeaturesMassiv = (massiv, repeat = false) => {
   return newMassiv;
 };
 
-const createOffer = () => {
-  const lat = getRandomNumber(START_LAT, FINISH_LAT, 5);
-  const lng = getRandomNumber(START_LNG, FINISH_LNG, 5);
-  const time = [getRandomInt(0, times.length - 1)];
+const createOffer = (index) => {
+  const lat = getRandomNumber(START_LAT, FINISH_LAT, AFTER_POINT);
+  const lng = getRandomNumber(START_LNG, FINISH_LNG, AFTER_POINT);
+  const time = getRandomInt(0, times.length - 1);
   return {
     author: {
-      avatar: authorAvatars[getRandomInt(0, authorAvatars.length - 1)],
+      avatar: getAvatar(index),
     },
     location: {
       lat: lat,
       lng: lng,
     },
     offer: {
-      title: offerTitles[getRandomInt(0, 10)],
+      title: getTitle(index),
       address: `location.${lat}, location.${lng}`,
-      price: getRandomInt(1000, 100000),
+      price: getRandomInt(MIN_PRICE, MAX_PRICE),
       type: types[getRandomInt(0, types.length - 1)],
-      rooms: getRandomInt(1, 10),
-      guests: getRandomInt(1, 1000),
+      rooms: getRandomInt(1, MAX_ROOMS),
+      guests: getRandomInt(1, MAX_GUESTS),
       checkin: time,
       checkout: time,
       futures: getSomeFeaturesMassiv(protoFeatures),
-      description: 'помещение - обычное помещение, как и все остальные, и больше ничего',
-      photos: getSomeFeaturesMassiv(protoPhotos, 7),
+      description: getDescription(index),
+      photos: getSomeFeaturesMassiv(protoPhotos, PHOTO_COUNT),
     },
   };
 };
 
-console.log(createOffer());
+const offers = new Array(SIMILAR_OFFER_COUNT).fill(null).map((offer, index) => createOffer(index));
+offers;
+// console.log(offers);
