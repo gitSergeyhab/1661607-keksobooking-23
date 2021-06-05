@@ -85,7 +85,7 @@ const createOffer = (index) => {
     },
     offer: {
       title: getTitle(index),
-      address: `location.${lat}, location.${lng}`,
+      address: `${lat}, ${lng}`,
       price: getRandomInt(MIN_PRICE, MAX_PRICE),
       type: types[getRandomInt(0, types.length - 1)],
       rooms: getRandomInt(1, MAX_ROOMS),
