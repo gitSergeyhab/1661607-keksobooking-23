@@ -74,7 +74,7 @@ const getSomeFeaturesMassiv = (massiv, repeat = false) => {
 const createOffer = (index) => {
   const lat = getRandomNumber(START_LAT, FINISH_LAT, AFTER_POINT);
   const lng = getRandomNumber(START_LNG, FINISH_LNG, AFTER_POINT);
-  const time = getRandomInt(0, times.length - 1);
+  const time = times[getRandomInt(0, times.length - 1)];
   return {
     author: {
       avatar: getAvatar(index),
