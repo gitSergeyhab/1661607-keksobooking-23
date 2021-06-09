@@ -26,21 +26,21 @@ const protoPhotos = [
 ];
 
 // новый массив из случайных элементов massiv
-const getSomeFeaturesMassiv = (massiv, repeat = false) => {
-  const newMassiv = [];
+const getArrayFromArray = (arr, repeat = false) => {
+  const newArr = [];
   if (repeat) {
     for (let ind = 0; ind < repeat; ind++) {
-      newMassiv.push(massiv[getRandomInt(0, massiv.length - 1)]);
+      newArr.push(arr[getRandomInt(0, arr.length - 1)]);
     }
   } else {
-    massiv.forEach(() => {
-      const newElement = massiv[getRandomInt(0, massiv.length - 1)];
-      if (newMassiv.indexOf(newElement) === -1) {
-        newMassiv.push(newElement);
+    arr.forEach(() => {
+      const newElement = arr[getRandomInt(0, arr.length - 1)];
+      if (newArr.indexOf(newElement) === -1) {
+        newArr.push(newElement);
       }
     });
   }
-  return newMassiv;
+  return newArr;
 };
 
 const createOffer = (index) => {
@@ -64,9 +64,9 @@ const createOffer = (index) => {
       guests: getRandomInt(1, MAX_GUESTS),
       checkin: time,
       checkout: time,
-      futures: getSomeFeaturesMassiv(protoFeatures),
+      futures: getArrayFromArray(protoFeatures),
       description: getDescription(index),
-      photos: getSomeFeaturesMassiv(protoPhotos, PHOTO_COUNT),
+      photos: getArrayFromArray(protoPhotos, PHOTO_COUNT),
     },
   };
 };
