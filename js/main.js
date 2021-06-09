@@ -1,34 +1,6 @@
-// Функция, возвращающая случайное целое число из переданного диапазона включительно:
-
-const getRandomInt = (min = 1, max = 10) => {
-  [min, max] = [
-    Math.min(Math.abs(min), Math.abs(max)),
-    Math.max(Math.abs(min), Math.abs(max)),
-  ];
-  return Math.round(Math.random() * (max - min) + min);
-};
-
-// Функция, возвращающая случайное число с плавающей точкой из переданного диапазона включительно.
-const getRandomNumber = (min = 1, max = 10, afterPoint = 0) => {
-  [min, max] = [
-    Math.min(Math.abs(min), Math.abs(max)),
-    Math.max(Math.abs(min), Math.abs(max)),
-  ];
-  return +(Math.random() * (max - min) + min).toFixed(afterPoint);
-};
-
-// ----------------------------------------------//
-
-//4.9. Больше деталей
+import {getRandomInt, getRandomNumber} from './modules/util.js';
 
 const SIMILAR_OFFER_COUNT = 10;
-
-// const SIMILAR_AVATAR_COUNT = 10;
-// avatar, строка — адрес изображения вида img/avatars/user{{xx}}.png,
-//где {{xx}} — это число от 1 до 8 с ведущим нулём.
-//Например, 01, 02 и т. д. Адреса изображений не повторяются.
-//??? - не очень понял: как если объектов 10, а аватарок всего 8, аватарки должны не повторяться ???
-
 const START_LAT = 35.65000;
 const FINISH_LAT = 35.70000;
 const START_LNG = 139.70000;
@@ -101,4 +73,4 @@ const createOffer = (index) => {
 
 const offers = new Array(SIMILAR_OFFER_COUNT).fill(null).map((offer, index) => createOffer(index));
 offers;
-// console.log(offers);
+console.log(offers);
