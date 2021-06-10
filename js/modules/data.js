@@ -1,3 +1,4 @@
+const SIMILAR_OFFER_COUNT = 10;
 const START_LAT = 35.65000;
 const FINISH_LAT = 35.70000;
 const START_LNG = 139.70000;
@@ -18,4 +19,4 @@ const protoPhotos = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-export {START_LAT, FINISH_LAT, START_LNG, FINISH_LNG, AFTER_POINT, PHOTO_COUNT, MIN_PRICE, MAX_PRICE, MAX_ROOMS, MAX_GUESTS, types, times, protoFeatures, protoPhotos};
+export {SIMILAR_OFFER_COUNT, START_LAT, FINISH_LAT, START_LNG, FINISH_LNG, AFTER_POINT, PHOTO_COUNT, MIN_PRICE, MAX_PRICE, MAX_ROOMS, MAX_GUESTS, types, times, protoFeatures, protoPhotos};
