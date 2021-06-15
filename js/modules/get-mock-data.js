@@ -3,7 +3,12 @@ import {START_LAT, FINISH_LAT, START_LNG, FINISH_LNG, AFTER_POINT, PHOTO_COUNT, 
 
 const getMockData = (offerCount) => {
   // если эти функции будут использоваться где-то еще, вынесу в отдельный модуль, а пока так:
-  const getAvatar = (index) => `img/avatars/user0${index + 1}.png`;
+  const getAvatar = (index) => {
+    if (index > 8) {
+      return `img/avatars/user${index + 1}.png`;
+    }
+    return `img/avatars/user0${index + 1}.png`;
+  };
   const getTitle = (index) => `offer-title-${index + 1}`;
   const getDescription = (index) => `чрезвычайно обычное помещение № ${index + 1}`;
   const getArrayFromArray = (arr, repeat = false) => {
