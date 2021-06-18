@@ -62,6 +62,12 @@ const form = () => {
     });
   };
 
+  // начальные значения
+  hideOptions();
+  showOptions(['1']);
+  getSelectedToOption('1');
+
+  // значения по change
   changePriceByType();
   changeGuestsByRooms();
 };
