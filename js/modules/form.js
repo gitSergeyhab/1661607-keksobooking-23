@@ -1,6 +1,7 @@
 const form = () => {
   const MAX_LEN_TITLE = 100;
   const MIN_LEN_TITLE = 30;
+  const MAX_PRICE = 1000000;
 
   const formField = document.querySelector('.ad-form');
   const titleField = formField.querySelector('#title'); // так и не понял на что его валидировать в js, если с длиной справляются атрибуты в html
@@ -36,6 +37,19 @@ const form = () => {
     '3': ['1', '2', '3'],
     '100': ['0'],
   };
+
+
+  const getMinPrise = () => typeAndPrice[typeField.value];
+  priceField.addEventListener('input', () => {
+    if (priceField.value < getMinPrise()) {
+      priceField.setCustomValidity(`минимальная цена ${getMinPrise()}`);
+    } else if (priceField.value > MAX_PRICE){
+      priceField.setCustomValidity(`максимальная цена ${MAX_PRICE}`);
+    } else {
+      priceField.setCustomValidity('');
+    }
+    priceField.reportValidity();
+  });
 
 
   const changePriceByType = () => {
