@@ -1,11 +1,26 @@
 const form = () => {
+  const MAX_LEN_TITLE = 100;
+  const MIN_LEN_TITLE = 30;
+
   const formField = document.querySelector('.ad-form');
-  // const titleField = formField.querySelector('#title'); // так и не понял на что его валидировать в js, если с длиной справляются атрибуты в html
+  const titleField = formField.querySelector('#title'); // так и не понял на что его валидировать в js, если с длиной справляются атрибуты в html
   const priceField = formField.querySelector('#price');
   const typeField = formField.querySelector('#type');
   const roomNumber = formField.querySelector('#room_number');
   const capacity = formField.querySelector('#capacity');
   const optionCapacitys = capacity.querySelectorAll('option');
+
+  titleField.addEventListener('input', () => {
+    // думаю, этот блок лишний, но пусть будет ->
+    if (titleField.value.length < MIN_LEN_TITLE) {
+      titleField.setCustomValidity(`нужно еще ${MIN_LEN_TITLE - titleField.value.length} символов`);
+    } else if (titleField.value.length > MAX_LEN_TITLE) {
+      titleField.setCustomValidity(`удалите ${titleField.value.length - MAX_LEN_TITLE} символов`);
+    } else {
+      titleField.setCustomValidity('');
+    } // <-
+    titleField.reportValidity();
+  });
 
   const typeAndPrice = {
     bungalow: 0,
