@@ -8,6 +8,8 @@ const form = () => {
   const priceField = formField.querySelector('#price');
   const typeField = formField.querySelector('#type');
   const roomNumber = formField.querySelector('#room_number');
+  const timein = formField.querySelector('#timein');
+  const timeout = formField.querySelector('#timeout');
   const capacity = formField.querySelector('#capacity');
   const optionCapacitys = capacity.querySelectorAll('option');
 
@@ -26,29 +28,13 @@ const form = () => {
     '100': ['0'],
   };
 
-  titleField.addEventListener('input', () => {
-    // думаю, этот блок лишний, но пусть будет ->
-    if (titleField.value.length < MIN_LEN_TITLE) {
-      titleField.setCustomValidity(`нужно еще ${MIN_LEN_TITLE - titleField.value.length} символов`);
-    } else if (titleField.value.length > MAX_LEN_TITLE) {
-      titleField.setCustomValidity(`удалите ${titleField.value.length - MAX_LEN_TITLE} символов`);
-    } else {
-      titleField.setCustomValidity('');
-    } // <-
-    titleField.reportValidity();
-  });
-
   const getMinPrise = () => typeAndPrice[typeField.value];
-  priceField.addEventListener('input', () => {
-    if (priceField.value < getMinPrise()) {
-      priceField.setCustomValidity(`минимальная цена ${getMinPrise()}`);
-    } else if (priceField.value > MAX_PRICE){
-      priceField.setCustomValidity(`максимальная цена ${MAX_PRICE}`);
-    } else {
-      priceField.setCustomValidity('');
-    }
-    priceField.reportValidity();
-  });
+
+  const changeTimes = (field1, field2) => {
+    field1.addEventListener('change', () => {
+      field2.value = field1.value;
+    });
+  };
 
   const changePriceByType = () => {
     typeField.addEventListener('change', () => {
@@ -96,6 +82,31 @@ const form = () => {
   // значения по change
   changePriceByType();
   changeGuestsByRooms();
+  changeTimes(timein, timeout);
+  changeTimes(timeout, timein);
+
+  titleField.addEventListener('input', () => {
+    // думаю, этот блок лишний, но пусть будет ->
+    if (titleField.value.length < MIN_LEN_TITLE) {
+      titleField.setCustomValidity(`нужно еще ${MIN_LEN_TITLE - titleField.value.length} символов`);
+    } else if (titleField.value.length > MAX_LEN_TITLE) {
+      titleField.setCustomValidity(`удалите ${titleField.value.length - MAX_LEN_TITLE} символов`);
+    } else {
+      titleField.setCustomValidity('');
+    } // <-
+    titleField.reportValidity();
+  });
+
+  priceField.addEventListener('input', () => {
+    if (priceField.value < getMinPrise()) {
+      priceField.setCustomValidity(`минимальная цена ${getMinPrise()}`);
+    } else if (priceField.value > MAX_PRICE){
+      priceField.setCustomValidity(`максимальная цена ${MAX_PRICE}`);
+    } else {
+      priceField.setCustomValidity('');
+    }
+    priceField.reportValidity();
+  });
 };
 
 export {form};
