@@ -11,8 +11,6 @@ const changeFormCondition = (formSelector,  classBlock, disable = true) => {
   }
 };
 
-// Реализуйте с помощью JavaScript (удобнее функцией!)
-//  перевод страницы в неактивное состояние. Все пункты
 changeFormCondition('.ad-form', 'ad-form--disabled');
 changeFormCondition('.map__filters', 'ad-form--disabled');
 
