@@ -1,4 +1,4 @@
-const OFFER_COUNT = 100;
+const OFFER_COUNT = 1000;
 const START_LAT = 35.65000;
 const FINISH_LAT = 35.70000;
 const START_LNG = 139.70000;
@@ -7,8 +7,8 @@ const AFTER_POINT = 5;
 const PHOTO_COUNT = 7;
 const MIN_PRICE = 1000;
 const MAX_PRICE = 100000;
-const MAX_ROOMS = 4;
-const MAX_GUESTS = 1;
+const MAX_ROOMS = 3;
+const MAX_GUESTS = 2;
 const TOKYO_COORDINATE = {
   LAT: 35.6895,
   LNG: 139.69171,
