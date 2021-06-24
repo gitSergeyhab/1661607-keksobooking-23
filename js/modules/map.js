@@ -1,18 +1,17 @@
 // import '../../leaflet/leaflet.js.map';
 // import '../../leaflet/leaflet.js';
+// ??? так и не понял, как подключить их из файла, пока добавил отдельным скриптом... ???
 
-// так и не понял, как подключить их из файла, пока добавил отдельным скриптом...
 import {TOKYO_COORDINATE} from './data.js';
 import {changeFormCondition} from './change-form-condition.js';
 import {getMockData} from './get-mock-data.js';
 import {OFFER_COUNT} from './data.js';
 import {createNewCard} from './create-new-card.js';
-import {reduceAllFilters, housingType, housingPrice, housingRoom, housingGuest} from './filter.js';
+import {reduceAllFilters, housingType, housingPrice, housingRoom, housingGuest, housingFeature} from './filter.js';
 
 const points = getMockData(OFFER_COUNT);
 
 const address = document.querySelector('#address');
-
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -23,7 +22,6 @@ const map = L.map('map-canvas')
     lat: TOKYO_COORDINATE.LAT,
     lng: TOKYO_COORDINATE.LNG,
   }, 12);
-
 
 // иконки
 const mainPinIcon = L.icon({
@@ -38,7 +36,6 @@ const pinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-
 // генератор меток объявлений
 const generateMarker = (point) => {
   const {location: {lat,lng}} = point;
@@ -48,32 +45,35 @@ const generateMarker = (point) => {
   }, {
     icon: pinIcon,
   });
-
+  // листенеры для удаления перед новой отрисовкой
   housingType.addEventListener('change', () => marker.remove());
   housingPrice.addEventListener('change', () => marker.remove());
   housingRoom.addEventListener('change', () => marker.remove());
   housingGuest.addEventListener('change', () => marker.remove());
+  housingFeature.addEventListener('change', () => marker.remove());
 
   marker
     .addTo(map)
     .bindPopup(createNewCard(point) /*, {keepInView: true} */ ); // без keepInView почему-то все тоже прекрасн работает
 };
 
+// добавляю что есть на карту
 const addPointsToMap = (array) => array.map((point) => generateMarker(point));
 
-
+// листенер запускающий отрисовку при change на любом поле фильтра
 const addOneFieldListener = (field, array) => field.addEventListener('change', () => {
   const newArr = reduceAllFilters(array);
   addPointsToMap(newArr);
 });
 
+// листенер всех полей для отрисовки, хотя, думаю, он лишний
 const addAllFieldsListener = (array) => {
   addOneFieldListener(housingType, array);
   addOneFieldListener(housingPrice, array);
   addOneFieldListener(housingRoom, array);
   addOneFieldListener(housingGuest, array);
+  addOneFieldListener(housingFeature, array);
 };
-
 addAllFieldsListener(points);
 
 const creteMap = () => {
@@ -104,6 +104,7 @@ const creteMap = () => {
   address.value = getCoordinate(TOKYO_COORDINATE.LAT, TOKYO_COORDINATE.LNG);
   // загрузка всех точек на карте
   addPointsToMap(points);
+
 };
 
 export {creteMap, points};

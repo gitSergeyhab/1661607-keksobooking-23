@@ -1,4 +1,4 @@
-const OFFER_COUNT = 1000;
+const OFFER_COUNT = 100; // слишком жесткие фильтры для всего 10 объявлений ))
 const START_LAT = 35.65000;
 const FINISH_LAT = 35.70000;
 const START_LNG = 139.70000;
@@ -9,7 +9,7 @@ const MIN_PRICE = 1000;
 const MAX_PRICE = 100000;
 const MAX_ROOMS = 3;
 const MAX_GUESTS = 2;
-const TOKYO_COORDINATE = {
+const TOKYO_COORDINATE = { // центр вышел как-то скраю, если что потом поправлю
   LAT: 35.6895,
   LNG: 139.69171,
 };
