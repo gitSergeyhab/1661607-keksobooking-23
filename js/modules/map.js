@@ -7,7 +7,7 @@ import {changeFormCondition} from './change-form-condition.js';
 import {getMockData} from './get-mock-data.js';
 import {OFFER_COUNT} from './data.js';
 import {createNewCard} from './create-new-card.js';
-import {reduceAllFilters, housingType, housingPrice, housingRoom, housingGuest, housingFeature} from './filter.js';
+import {reduceAllFilters, allInputFields} from './filter.js';
 
 const points = getMockData(OFFER_COUNT);
 
@@ -46,11 +46,7 @@ const generateMarker = (point) => {
     icon: pinIcon,
   });
   // листенеры для удаления перед новой отрисовкой
-  housingType.addEventListener('change', () => marker.remove());
-  housingPrice.addEventListener('change', () => marker.remove());
-  housingRoom.addEventListener('change', () => marker.remove());
-  housingGuest.addEventListener('change', () => marker.remove());
-  housingFeature.addEventListener('change', () => marker.remove());
+  allInputFields.forEach((field) => field.addEventListener('change', () => marker.remove()));
 
   marker
     .addTo(map)
@@ -66,15 +62,8 @@ const addOneFieldListener = (field, array) => field.addEventListener('change', (
   addPointsToMap(newArr);
 });
 
-// листенер всех полей для отрисовки, хотя, думаю, он лишний
-const addAllFieldsListener = (array) => {
-  addOneFieldListener(housingType, array);
-  addOneFieldListener(housingPrice, array);
-  addOneFieldListener(housingRoom, array);
-  addOneFieldListener(housingGuest, array);
-  addOneFieldListener(housingFeature, array);
-};
-addAllFieldsListener(points);
+// листенеры всех полей для отрисовки
+allInputFields.forEach((field) => addOneFieldListener(field, points));
 
 const creteMap = () => {
   L.tileLayer(

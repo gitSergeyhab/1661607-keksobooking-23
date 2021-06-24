@@ -6,6 +6,7 @@ const housingPrice = mapFilter.querySelector('#housing-price');
 const housingRoom = mapFilter.querySelector('#housing-rooms');
 const housingGuest = mapFilter.querySelector('#housing-guests');
 const housingFeature = mapFilter.querySelector('#housing-features');
+const allInputFields = [housingType, housingPrice, housingRoom, housingGuest, housingFeature];
 
 const prices = {
   'any': [0, MAX_PRICE],
@@ -84,4 +85,4 @@ const reduceAllFilters = (arr) => [
 ].reduce((acc, elem) => elem[0](acc, elem[1]), arr);
 
 
-export {reduceAllFilters, housingType, housingPrice, housingRoom, housingGuest, housingFeature};
+export {reduceAllFilters, allInputFields};
