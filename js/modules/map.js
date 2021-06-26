@@ -1,13 +1,9 @@
-// import '../../leaflet/leaflet.js.map';
-// import '../../leaflet/leaflet.js';
-// ??? так и не понял, как подключить их из файла, пока добавил отдельным скриптом... ???
-
 import {TOKYO_COORDINATE} from './data.js';
 import {changeFormCondition} from './change-form-condition.js';
 import {getMockData} from './get-mock-data.js';
 import {OFFER_COUNT} from './data.js';
 import {createNewCard} from './create-new-card.js';
-import {reduceAllFilters, allInputFields} from './filter.js';
+import {reduceAllFilters, mapFilter} from './filter.js';
 
 const points = getMockData(OFFER_COUNT);
 
@@ -52,10 +48,9 @@ const createMarkerGroup = (array) => {
   };
 
   array.forEach((point) => generateMarker(point));
-
-  allInputFields.forEach((field) => field.addEventListener('change', () => {
+  mapFilter.addEventListener('change', () => {
     markerGroup.remove();
-  }));
+  });
 };
 
 // колбэк, чтоб можно было потом удалить
@@ -65,7 +60,7 @@ function onChangeFilter() {
 }
 
 // листенеры всех полей для отрисовки
-allInputFields.forEach((field)=> field.addEventListener('change', onChangeFilter));
+mapFilter.addEventListener('change', onChangeFilter);
 
 const creteMap = () => {
   L.tileLayer(
