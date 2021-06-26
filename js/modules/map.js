@@ -62,7 +62,11 @@ const createMarkerGroup = (array) => {
 
 // создать листенеры формы для createMarkerGroup при change на фильтрах:
 mapFilter.addEventListener('change', () => createMarkerGroup(reduceAllFilters(points)));
-
+// mapFilter.addEventListener('change', () => { // ОСТАВИЛ ДЛЯ ТЕСТОВ
+//   const x = reduceAllFilters(points);
+//   console.log(x);
+//   createMarkerGroup(x);
+// } );
 const creteMap = () => {
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

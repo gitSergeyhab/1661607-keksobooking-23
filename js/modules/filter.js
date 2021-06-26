@@ -38,40 +38,23 @@ const inputsFeature = housingFeature.querySelectorAll('input');
 
 // список futures из инпутов
 const getCheckedFututes = () => {
-  const checkedInputs = [];
-  inputsFeature.forEach((input) => {
-    if (input.checked) {
-      checkedInputs.push(input.id.slice(7));
-    }
-  });
-  return checkedInputs;
-  // можно, конечно и так, но сам с трудом понимаю, что написал:
-  // return Array.from(inputsFeature)
-  //   .map((input) => input.checked ? input.id.slice(7) : NaN)
-  //   .filter((item) => item);
+  // возвращет имя фильтра или NaN, если тот не выбран:
+  const checkOneFilter = (filter) => filter.checked ? filter.id.split('filter-')[1] : NaN;
+  return Array.from(inputsFeature)
+    .map((filter) => checkOneFilter(filter))
+    .filter((filter) => filter);
 };
 
 // проверка, что в предложении есть все нужные futures
-const allArrayInArray = (arrayFromFilter, arrayFromData) => {
-  let res = true;
-  arrayFromFilter.forEach((elem1) => {
-    if (arrayFromData.indexOf(elem1) === -1) {
-      res = false;
-    }
-  });
-  return res;
+const allArrayInArray = (arrayFilter, arrayData) => {
+  // возвращает true/false - есть или нет чекнутая Feature в массиве с данными:
+  const checkFilterFromFormInData = (filterForm) => arrayData.some((filterData) => filterData === filterForm);
+  return arrayFilter.every((filter) => checkFilterFromFormInData(filter)); //проверяет, что есть все (каждый===true)
 };
 
-const filterFuture = (array, values) => {
-  const newArray = [];
-  array.forEach((element) => {
-    const futures = element.offer.futures;
-    if (allArrayInArray(values, futures)) {
-      newArray.push(element);
-    }
-  });
-  return newArray;
-};
+const filterFuture = (arrayData, arrayFilter) =>
+  arrayData.filter((element) => allArrayInArray(arrayFilter, element.offer.futures));
+
 
 // фильтр фильтров )
 const reduceAllFilters = (arr) => [
