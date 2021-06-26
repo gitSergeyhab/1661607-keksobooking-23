@@ -36,34 +36,36 @@ const pinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-// генератор меток объявлений
-const generateMarker = (point) => {
-  const {location: {lat,lng}} = point;
-  const marker = L.marker({
-    lat,
-    lng,
-  }, {
-    icon: pinIcon,
-  });
-  // листенеры для удаления перед новой отрисовкой
-  allInputFields.forEach((field) => field.addEventListener('change', () => marker.remove()));
+const createMarkerGroup = (array) => {
+  const markerGroup = L.layerGroup().addTo(map);
+  const generateMarker = (point) => {
+    const {location: {lat,lng}} = point;
+    const marker = L.marker({
+      lat,
+      lng,
+    }, {
+      icon: pinIcon,
+    });
+    marker
+      .addTo(markerGroup)
+      .bindPopup(createNewCard(point));
+  };
 
-  marker
-    .addTo(map)
-    .bindPopup(createNewCard(point) /*, {keepInView: true} */ ); // без keepInView почему-то все тоже прекрасн работает
+  array.forEach((point) => generateMarker(point));
+
+  allInputFields.forEach((field) => field.addEventListener('change', () => {
+    markerGroup.remove();
+  }));
 };
 
-// добавляю что есть на карту
-const addPointsToMap = (array) => array.map((point) => generateMarker(point));
-
-// листенер запускающий отрисовку при change на любом поле фильтра
-const addOneFieldListener = (field, array) => field.addEventListener('change', () => {
-  const newArr = reduceAllFilters(array);
-  addPointsToMap(newArr);
-});
+// колбэк, чтоб можно было потом удалить
+function onChangeFilter() {
+  const newArr = reduceAllFilters(points);
+  createMarkerGroup(newArr);
+}
 
 // листенеры всех полей для отрисовки
-allInputFields.forEach((field) => addOneFieldListener(field, points));
+allInputFields.forEach((field)=> field.addEventListener('change', onChangeFilter));
 
 const creteMap = () => {
   L.tileLayer(
@@ -92,8 +94,7 @@ const creteMap = () => {
   // начальные координаты
   address.value = getCoordinate(TOKYO_COORDINATE.LAT, TOKYO_COORDINATE.LNG);
   // загрузка всех точек на карте
-  addPointsToMap(points);
-
+  createMarkerGroup(points);
 };
 
 export {creteMap, points};
