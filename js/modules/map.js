@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+
 import {TOKYO_COORDINATE} from './data.js';
 import {changeFormCondition} from './change-form-condition.js';
 import {getMockData} from './get-mock-data.js';
@@ -48,19 +50,18 @@ const createMarkerGroup = (array) => {
   };
 
   array.forEach((point) => generateMarker(point));
-  mapFilter.addEventListener('change', () => {
+
+  // создать и удалить листенеры формы для markerGroup.remove() при change на фильтрах
+  const onChangeFormToGroupDel = () => removeMarkerGroup();
+  mapFilter.addEventListener('change', onChangeFormToGroupDel);
+  function removeMarkerGroup() {
     markerGroup.remove();
-  });
+    mapFilter.removeEventListener('change', onChangeFormToGroupDel);
+  }
 };
 
-// колбэк, чтоб можно было потом удалить
-function onChangeFilter() {
-  const newArr = reduceAllFilters(points);
-  createMarkerGroup(newArr);
-}
-
-// листенеры всех полей для отрисовки
-mapFilter.addEventListener('change', onChangeFilter);
+// создать листенеры формы для createMarkerGroup при change на фильтрах:
+mapFilter.addEventListener('change', () => createMarkerGroup(reduceAllFilters(points)));
 
 const creteMap = () => {
   L.tileLayer(

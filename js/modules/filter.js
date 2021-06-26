@@ -20,7 +20,6 @@ const filterByOneValue = (key) => (
     value === 'any' ?
       array :
       array.filter((element) => element.offer[key] === value || element.offer[key] === +value)
-      // я бы поменял на просто element.offer[key] == value
   )
 );
 
@@ -82,6 +81,5 @@ const reduceAllFilters = (arr) => [
   [filterGuest, housingGuest.value],
   [filterFuture, getCheckedFututes()],
 ].reduce((acc, elem) => elem[0](acc, elem[1]), arr);
-
 
 export {reduceAllFilters, mapFilter};
