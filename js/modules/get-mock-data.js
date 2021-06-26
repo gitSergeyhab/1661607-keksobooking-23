@@ -46,7 +46,7 @@ const getMockData = (offerCount) => {
         price: getRandomInt(MIN_PRICE, MAX_PRICE),
         type: types[getRandomInt(0, types.length - 1)],
         rooms: getRandomInt(1, MAX_ROOMS),
-        guests: getRandomInt(1, MAX_GUESTS),
+        guests: getRandomInt(0, MAX_GUESTS),
         checkin: time,
         checkout: time,
         futures: getArrayFromArray(protoFeatures),
