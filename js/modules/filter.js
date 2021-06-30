@@ -1,4 +1,5 @@
-import {MAX_PRICE} from './data.js';
+import {MAX_PRICE, OFFER_COUNT} from './data.js';
+
 
 const mapFilter = document.querySelector('.map__filters');
 const housingType = mapFilter.querySelector('#housing-type');
@@ -36,8 +37,8 @@ const filterPrice = (array, value) => {
 
 const inputsFeature = housingFeature.querySelectorAll('input');
 
-// список futures из инпутов
-const getCheckedFututes = () => {
+// список features из инпутов
+const getCheckedFeatures = () => {
   // возвращет имя фильтра или NaN, если тот не выбран:
   const checkOneFilter = (filter) => filter.checked ? filter.id.split('filter-')[1] : NaN;
   return Array.from(inputsFeature)
@@ -45,15 +46,15 @@ const getCheckedFututes = () => {
     .filter((filter) => filter);
 };
 
-// проверка, что в предложении есть все нужные futures
-const allArrayInArray = (arrayFilter, arrayData) => {
+// проверка, что в предложении есть все нужные features
+const allArrayInArray = (arrayFilter, arrayData = []) => {
   // возвращает true/false - есть или нет чекнутая Feature в массиве с данными:
   const checkFilterFromFormInData = (filterForm) => arrayData.some((filterData) => filterData === filterForm);
   return arrayFilter.every((filter) => checkFilterFromFormInData(filter)); //проверяет, что есть все (каждый===true)
 };
 
-const filterFuture = (arrayData, arrayFilter) =>
-  arrayData.filter((element) => allArrayInArray(arrayFilter, element.offer.futures));
+const filterFeature = (arrayData, arrayFilter) =>
+  arrayData.filter((element) => allArrayInArray(arrayFilter, element.offer.features));
 
 
 // фильтр фильтров )
@@ -62,7 +63,12 @@ const reduceAllFilters = (arr) => [
   [filterPrice, housingPrice.value],
   [filterRoom, housingRoom.value],
   [filterGuest, housingGuest.value],
-  [filterFuture, getCheckedFututes()],
+  [filterFeature, getCheckedFeatures()],
 ].reduce((acc, elem) => elem[0](acc, elem[1]), arr);
 
-export {reduceAllFilters, mapFilter};
+const getNeedPoints = (arr) => {
+  const reduceArr = reduceAllFilters(arr);
+  return reduceArr.length > OFFER_COUNT ? reduceArr.slice(0, OFFER_COUNT) : reduceArr;
+};
+
+export {getNeedPoints, mapFilter};

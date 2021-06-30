@@ -1,6 +1,7 @@
 const MAX_LEN_TITLE = 100;
 const MIN_LEN_TITLE = 30;
 const MAX_PRICE = 1000000;
+const ERROR_BORDER = '4px solid red';
 
 const typeAndPrice = {
   bungalow: 0,
@@ -17,18 +18,18 @@ const roomsAndGuests = {
   '100': ['0'],
 };
 
+
+const formField = document.querySelector('.ad-form');
+const titleField = formField.querySelector('#title');
+const priceField = formField.querySelector('#price');
+const typeField = formField.querySelector('#type');
+const roomNumber = formField.querySelector('#room_number');
+const timein = formField.querySelector('#timein');
+const timeout = formField.querySelector('#timeout');
+const capacity = formField.querySelector('#capacity');
+const optionCapacitys = capacity.querySelectorAll('option');
+
 const validateForm = () => {
-
-  const formField = document.querySelector('.ad-form');
-  const titleField = formField.querySelector('#title');
-  const priceField = formField.querySelector('#price');
-  const typeField = formField.querySelector('#type');
-  const roomNumber = formField.querySelector('#room_number');
-  const timein = formField.querySelector('#timein');
-  const timeout = formField.querySelector('#timeout');
-  const capacity = formField.querySelector('#capacity');
-  const optionCapacitys = capacity.querySelectorAll('option');
-
   const getMinPrise = () => typeAndPrice[typeField.value];
 
   const addTimesListener = (field1, field2) => {
@@ -97,8 +98,16 @@ const validateForm = () => {
     priceField.reportValidity();
   });
 
+  //а неверно заполненные поля подсвечиваются красной рамкой.
+  formField.querySelector('.ad-form__submit').addEventListener('click', () => {
+    const inputs = formField.querySelectorAll('input:not(#address)');
+    inputs.forEach((input) => {
+      input.style.border = input.checkValidity() ? '' : ERROR_BORDER;
+    });
+  });
+
   addTimesListener(timein, timeout);
   addTimesListener(timeout, timein);
 };
 
-export {validateForm};
+export {validateForm, formField};

@@ -1,4 +1,6 @@
-const changeFormCondition = (formSelector,  classBlock, disable = true) => {
+const CLASS_BLOCK = 'ad-form--disabled';
+
+const changeFormCondition = (formSelector,  classBlock, disable) => {
   const offerForm = document.querySelector(formSelector);
   const fildsets = Array.from(offerForm.children);
 
@@ -11,7 +13,9 @@ const changeFormCondition = (formSelector,  classBlock, disable = true) => {
   }
 };
 
-changeFormCondition('.ad-form', 'ad-form--disabled');
-changeFormCondition('.map__filters', 'ad-form--disabled');
+const disableFormsCondition = (disable = true) => {
+  changeFormCondition('.ad-form', CLASS_BLOCK, disable);
+  changeFormCondition('.map__filters', CLASS_BLOCK, disable);
+};
 
-export {changeFormCondition};
+export {disableFormsCondition};
