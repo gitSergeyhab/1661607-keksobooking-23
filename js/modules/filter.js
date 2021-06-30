@@ -68,6 +68,7 @@ const reduceAllFilters = (arr) => [
 
 const getNeedPoints = (arr) => {
   const reduceArr = reduceAllFilters(arr);
+  // console.log(reduceArr)
   return reduceArr.length > OFFER_COUNT ? reduceArr.slice(0, OFFER_COUNT) : reduceArr;
 };
 

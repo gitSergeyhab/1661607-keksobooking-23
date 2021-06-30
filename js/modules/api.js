@@ -1,4 +1,8 @@
 import {addPostErrorMessage} from './add-post-error-message.js';
+import {formField} from './validate-form.js';
+import {createMarkerGroup} from './map.js';
+import {getNeedPoints, mapFilter} from './filter.js';
+import {btnReset} from './add-listeners-forms-map.js';
 
 const GET_ERROR_MESSAGE = 'Данные не загрузились, попробуте позже.';
 const GET_SUCCESS_MESSAGE = 'Данные успешно отправдены.';
@@ -14,21 +18,35 @@ const addMessage = (color, element, text) => {
   setTimeout(() => errorMessage.remove(), TIME_MESSAGE_REMOVE);
 };
 
-const getData = (url, cbCreateMap, MessageElement) => {
+const getData = (url, MessageElement) => {
   fetch(url)
     .then((response) => {
       if (response.ok) {
         return response.json();
       }})
-    .then((response) => cbCreateMap(response))
+    .then((response) => {
+      // отрисовать точки сразу и ...
+      createMarkerGroup(getNeedPoints(response));
+
+      //...создать листенеры для createMarkerGroup при change на фильтрах/клик на ресете/сабмит на отправке :
+      mapFilter.addEventListener('change', () => createMarkerGroup(getNeedPoints(response)));
+      btnReset.addEventListener('click', () => createMarkerGroup(getNeedPoints(response)));
+      // {
+      //   setTimeout(() => createMarkerGroup(getNeedPoints(response)), 0); // чтобы успели сбросится формы-фильтры
+      // });
+      formField.addEventListener('submit', () => createMarkerGroup(getNeedPoints(response)));
+      // {
+      //   setTimeout(() => createMarkerGroup(getNeedPoints(response)), 0);
+      // });
+    } )
     .catch(() => addMessage(COLOR_ERROR, MessageElement, GET_ERROR_MESSAGE));
 };
 
 const postData = (url, form, MessageElement) => {
 
-  const formData = new FormData();
+  const formData = new FormData(form);
 
-  fetch(url, {
+  return fetch(url, {
     method: 'post',
     body: formData,
   })
