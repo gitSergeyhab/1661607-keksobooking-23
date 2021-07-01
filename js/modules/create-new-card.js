@@ -2,7 +2,7 @@ const cardTemplate = document.querySelector('#card').content.querySelector('arti
 
 const createNewCard = ({
   author: {avatar},
-  offer: {title, address, price, type, rooms, guests, checkin, checkout, futures, description, photos},
+  offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos},
 }) => {
 
   const types = {
@@ -18,9 +18,10 @@ const createNewCard = ({
   //Предусмотрите ситуацию, когда данных для заполнения не хватает ...
   const showBlock = (selector, content, showMarker) => {
     const element = card.querySelector(selector);
-    showMarker ?
-      element.innerHTML = content :
+    element.innerHTML = content;
+    if (!showMarker) {
       element.style.display = 'none';
+    }
   };
 
   showBlock('.popup__title', title, title);
@@ -31,15 +32,16 @@ const createNewCard = ({
   showBlock('.popup__text--time', `Заезд после ${checkin}, выезд до ${checkout}`, checkin);
   showBlock('.popup__description', description, description);
 
-  const makeFeature = (future) => `<li class="popup__feature popup__feature--${future}"></li>`;
-  const futureListText = futures.reduce((acc, elem) => acc + makeFeature(elem), '');
-  showBlock('.popup__features', futureListText, futures[0]);
+  const makeFeature = (feature) => `<li class="popup__feature popup__feature--${feature}"></li>`;
+  const featureListText = features ? features.reduce((acc, elem) => acc + makeFeature(elem), '') : [];
+  showBlock('.popup__features', featureListText, features && features[0]);
 
   const makePhoto = (photo) => `<img src=${photo} class="popup__photo" width="45" height="40" alt="Фотография жилья ${title}">`;
-  const photoListText = photos.reduce((acc, elem) => acc + makePhoto(elem), '');
-  showBlock('.popup__photos', photoListText, photos[0]);
+  const photoListText = photos ? photos.reduce((acc, elem) => acc + makePhoto(elem), '') : [];
+  showBlock('.popup__photos', photoListText, photos && photos[0]);
 
-  card.querySelector('.popup__avatar').src = avatar;
+  const popupAvatar = card.querySelector('.popup__avatar');
+  avatar ? popupAvatar.src = avatar : popupAvatar.style.display = 'none';
 
   return card;
 };

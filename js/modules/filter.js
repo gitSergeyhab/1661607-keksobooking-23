@@ -1,4 +1,5 @@
-import {MAX_PRICE} from './data.js';
+import {MAX_PRICE, OFFER_COUNT} from './data.js';
+
 
 const mapFilter = document.querySelector('.map__filters');
 const housingType = mapFilter.querySelector('#housing-type');
@@ -6,7 +7,6 @@ const housingPrice = mapFilter.querySelector('#housing-price');
 const housingRoom = mapFilter.querySelector('#housing-rooms');
 const housingGuest = mapFilter.querySelector('#housing-guests');
 const housingFeature = mapFilter.querySelector('#housing-features');
-const allInputFields = [housingType, housingPrice, housingRoom, housingGuest, housingFeature];
 
 const prices = {
   'any': [0, MAX_PRICE],
@@ -21,7 +21,6 @@ const filterByOneValue = (key) => (
     value === 'any' ?
       array :
       array.filter((element) => element.offer[key] === value || element.offer[key] === +value)
-      // я бы поменял на просто element.offer[key] == value
   )
 );
 
@@ -38,42 +37,25 @@ const filterPrice = (array, value) => {
 
 const inputsFeature = housingFeature.querySelectorAll('input');
 
-// список futures из инпутов
-const getCheckedFututes = () => {
-  const checkedInputs = [];
-  inputsFeature.forEach((input) => {
-    if (input.checked) {
-      checkedInputs.push(input.id.slice(7));
-    }
-  });
-  return checkedInputs;
-  // можно, конечно и так, но сам с трудом понимаю, что написал:
-  // return Array.from(inputsFeature)
-  //   .map((input) => input.checked ? input.id.slice(7) : NaN)
-  //   .filter((item) => item);
+// список features из инпутов
+const getCheckedFeatures = () => {
+  // возвращет имя фильтра или NaN, если тот не выбран:
+  const checkOneFilter = (filter) => filter.checked ? filter.id.split('filter-')[1] : NaN;
+  return Array.from(inputsFeature)
+    .map((filter) => checkOneFilter(filter))
+    .filter((filter) => filter);
 };
 
-// проверка, что в предложении есть все нужные futures
-const allArrayInArray = (arrayFromFilter, arrayFromData) => {
-  let res = true;
-  arrayFromFilter.forEach((elem1) => {
-    if (arrayFromData.indexOf(elem1) === -1) {
-      res = false;
-    }
-  });
-  return res;
+// проверка, что в предложении есть все нужные features
+const allArrayInArray = (arrayFilter, arrayData = []) => {
+  // возвращает true/false - есть или нет чекнутая Feature в массиве с данными:
+  const checkFilterFromFormInData = (filterForm) => arrayData.some((filterData) => filterData === filterForm);
+  return arrayFilter.every((filter) => checkFilterFromFormInData(filter)); //проверяет, что есть все (каждый===true)
 };
 
-const filterFuture = (array, values) => {
-  const newArray = [];
-  array.forEach((element) => {
-    const futures = element.offer.futures;
-    if (allArrayInArray(values, futures)) {
-      newArray.push(element);
-    }
-  });
-  return newArray;
-};
+const filterFeature = (arrayData, arrayFilter) =>
+  arrayData.filter((element) => allArrayInArray(arrayFilter, element.offer.features));
+
 
 // фильтр фильтров )
 const reduceAllFilters = (arr) => [
@@ -81,8 +63,13 @@ const reduceAllFilters = (arr) => [
   [filterPrice, housingPrice.value],
   [filterRoom, housingRoom.value],
   [filterGuest, housingGuest.value],
-  [filterFuture, getCheckedFututes()],
+  [filterFeature, getCheckedFeatures()],
 ].reduce((acc, elem) => elem[0](acc, elem[1]), arr);
 
+const getNeedPoints = (arr) => {
+  const reduceArr = reduceAllFilters(arr);
+  // console.log(reduceArr)
+  return reduceArr.length > OFFER_COUNT ? reduceArr.slice(0, OFFER_COUNT) : reduceArr;
+};
 
-export {reduceAllFilters, allInputFields};
+export {getNeedPoints, mapFilter};

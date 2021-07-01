@@ -1,4 +1,4 @@
-const OFFER_COUNT = 100; // слишком жесткие фильтры для всего 10 объявлений ))
+const OFFER_COUNT = 10; // слишком жесткие фильтры для всего 10 объявлений ))
 const START_LAT = 35.65000;
 const FINISH_LAT = 35.70000;
 const START_LNG = 139.70000;
@@ -9,9 +9,9 @@ const MIN_PRICE = 1000;
 const MAX_PRICE = 100000;
 const MAX_ROOMS = 3;
 const MAX_GUESTS = 2;
-const TOKYO_COORDINATE = { // центр вышел как-то скраю, если что потом поправлю
-  LAT: 35.6895,
-  LNG: 139.69171,
+const tokyoCoordinate = { // центр вышел как-то скраю, если что потом поправлю
+  lat: 35.68955,
+  lng: 139.69171,
 };
 const types = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const times = ['12:00', '13:00', '14:00'];
@@ -22,4 +22,4 @@ const protoPhotos = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-export {OFFER_COUNT, START_LAT, FINISH_LAT, START_LNG, FINISH_LNG, AFTER_POINT, PHOTO_COUNT, MIN_PRICE, MAX_PRICE, MAX_ROOMS, MAX_GUESTS, TOKYO_COORDINATE, types, times, protoFeatures, protoPhotos};
+export {OFFER_COUNT, START_LAT, FINISH_LAT, START_LNG, FINISH_LNG, AFTER_POINT, PHOTO_COUNT, MIN_PRICE, MAX_PRICE, MAX_ROOMS, MAX_GUESTS, tokyoCoordinate, types, times, protoFeatures, protoPhotos};

@@ -1,99 +1,89 @@
-// import '../../leaflet/leaflet.js.map';
-// import '../../leaflet/leaflet.js';
-// ??? так и не понял, как подключить их из файла, пока добавил отдельным скриптом... ???
+/* eslint-disable no-use-before-define */
 
-import {TOKYO_COORDINATE} from './data.js';
-import {changeFormCondition} from './change-form-condition.js';
-import {getMockData} from './get-mock-data.js';
-import {OFFER_COUNT} from './data.js';
+import {tokyoCoordinate, AFTER_POINT} from './data.js';
+import {disableFormsCondition} from './change-form-condition.js';
 import {createNewCard} from './create-new-card.js';
-import {reduceAllFilters, allInputFields} from './filter.js';
+import {removeMarkersByFilter} from './add-listeners-forms-map.js';
 
-const points = getMockData(OFFER_COUNT);
+// словарь иконок
+const icons = {
+  mainPin: {
+    iconUrl: '../../img/main-pin.svg',
+    iconSize: [52, 52],
+    iconAnchor: [26, 52],
+  },
+  pin: {
+    iconUrl: '../../img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  },
+};
 
 const address = document.querySelector('#address');
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    changeFormCondition('.ad-form', 'ad-form--disabled', false);
-    changeFormCondition('.map__filters', 'ad-form--disabled', false);
-  })
-  .setView({
-    lat: TOKYO_COORDINATE.LAT,
-    lng: TOKYO_COORDINATE.LNG,
-  }, 12);
+// координаты в поле адреса
+const getCoordinate = (lat, lng) => `широта: ${lat.toFixed(AFTER_POINT)}  долгота: ${lng.toFixed(AFTER_POINT)}`;
 
 // иконки
-const mainPinIcon = L.icon({
-  iconUrl: '../../img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+const mainPinIcon = L.icon(icons.mainPin);
+const pinIcon = L.icon(icons.pin);
+
+const map = L.map('map-canvas');
+
+// спец метка
+const mainMarker = L.marker({
+  lat: tokyoCoordinate.lat,
+  lng: tokyoCoordinate.lng,
+}, {
+  draggable: true,
+  icon: mainPinIcon,
 });
 
-const pinIcon = L.icon({
-  iconUrl: '../../img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
+// загрузка карты и спецмпркера (оба уже созданы)
+const loadMap = () => {
+  map.on('load', () => disableFormsCondition(false))
+    .setView({
+      lat: tokyoCoordinate.lat,
+      lng: tokyoCoordinate.lng,
+    }, 12);
 
-// генератор меток объявлений
-const generateMarker = (point) => {
-  const {location: {lat,lng}} = point;
-  const marker = L.marker({
-    lat,
-    lng,
-  }, {
-    icon: pinIcon,
-  });
-  // листенеры для удаления перед новой отрисовкой
-  allInputFields.forEach((field) => field.addEventListener('change', () => marker.remove()));
-
-  marker
-    .addTo(map)
-    .bindPopup(createNewCard(point) /*, {keepInView: true} */ ); // без keepInView почему-то все тоже прекрасн работает
-};
-
-// добавляю что есть на карту
-const addPointsToMap = (array) => array.map((point) => generateMarker(point));
-
-// листенер запускающий отрисовку при change на любом поле фильтра
-const addOneFieldListener = (field, array) => field.addEventListener('change', () => {
-  const newArr = reduceAllFilters(array);
-  addPointsToMap(newArr);
-});
-
-// листенеры всех полей для отрисовки
-allInputFields.forEach((field) => addOneFieldListener(field, points));
-
-const creteMap = () => {
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(map);
 
-  // спец метка
-  const mainMarker = L.marker({
-    lat: TOKYO_COORDINATE.LAT,
-    lng: TOKYO_COORDINATE.LNG,
-  }, {
-    draggable: true,
-    icon: mainPinIcon,
-  });
   mainMarker.addTo(map);
-
-  // координаты в поле адреса
-  const getCoordinate = (lat, lng) => `широта: ${lat.toFixed(4)}  долгота: ${lng.toFixed(4)}`;
   mainMarker.on('moveend', (evt) => {
     const {lat, lng} = evt.target.getLatLng();
     address.value = getCoordinate(lat, lng);
   });
 
-  // начальные координаты
-  address.value = getCoordinate(TOKYO_COORDINATE.LAT, TOKYO_COORDINATE.LNG);
-  // загрузка всех точек на карте
-  addPointsToMap(points);
-
+  address.value = getCoordinate(tokyoCoordinate.lat, tokyoCoordinate.lng); // начальные координаты
 };
 
-export {creteMap, points};
+// создание (группы) точек объявлений и добавление на карту
+const createMarkerGroup = (points) => {
+  const markerGroup = L.layerGroup().addTo(map);
+  const generateMarker = (point) => {
+    const {location: {lat,lng}} = point;
+    const marker = L.marker({
+      lat,
+      lng,
+    }, {
+      icon: pinIcon,
+    });
+    marker
+      .addTo(markerGroup)
+      .bindPopup(createNewCard(point));
+  };
+
+  // создаем все маркеры из респонса
+  points.forEach((point) => generateMarker(point));
+
+  // // создать и удалить листенеры формы для markerGroup.remove() при change на фильтрах
+  removeMarkersByFilter(markerGroup);
+};
+
+
+export {loadMap, createMarkerGroup, getCoordinate, map, mainMarker, address};
