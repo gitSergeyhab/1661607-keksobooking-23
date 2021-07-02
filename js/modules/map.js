@@ -5,6 +5,11 @@ import {disableFormsCondition} from './change-form-condition.js';
 import {createNewCard} from './create-new-card.js';
 import {removeMarkersByFilter} from './add-listeners-forms-map.js';
 
+const openStreetMapTile = {
+  png: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  contributors: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+};
+
 // словарь иконок
 const icons = {
   mainPin: {
@@ -48,8 +53,8 @@ const loadMap = () => {
     }, 12);
 
   L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    openStreetMapTile.png, {
+      attribution: openStreetMapTile.contributors,
     },
   ).addTo(map);
 

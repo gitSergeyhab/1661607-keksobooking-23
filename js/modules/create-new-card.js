@@ -15,12 +15,11 @@ const createNewCard = ({
 
   const card = cardTemplate.cloneNode(true);
 
-  //Предусмотрите ситуацию, когда данных для заполнения не хватает ...
   const showBlock = (selector, content, showMarker) => {
-    const element = card.querySelector(selector);
-    element.innerHTML = content;
+    const field = card.querySelector(selector);
+    field.innerHTML = content;
     if (!showMarker) {
-      element.style.display = 'none';
+      field.style.display = 'none'; // если данных нет, скрыть поле
     }
   };
 
@@ -33,11 +32,11 @@ const createNewCard = ({
   showBlock('.popup__description', description, description);
 
   const makeFeature = (feature) => `<li class="popup__feature popup__feature--${feature}"></li>`;
-  const featureListText = features ? features.reduce((acc, elem) => acc + makeFeature(elem), '') : [];
-  showBlock('.popup__features', featureListText, features && features[0]);
+  const featureListText = features ? features.reduce((acc, elem) => acc + makeFeature(elem), '') : ''; // если данных нет, ->""...
+  showBlock('.popup__features', featureListText, features && features[0]); //... а потом проссто display = 'none'
 
   const makePhoto = (photo) => `<img src=${photo} class="popup__photo" width="45" height="40" alt="Фотография жилья ${title}">`;
-  const photoListText = photos ? photos.reduce((acc, elem) => acc + makePhoto(elem), '') : [];
+  const photoListText = photos ? photos.reduce((acc, elem) => acc + makePhoto(elem), '') : '';
   showBlock('.popup__photos', photoListText, photos && photos[0]);
 
   const popupAvatar = card.querySelector('.popup__avatar');

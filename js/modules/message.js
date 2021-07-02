@@ -1,4 +1,5 @@
 /* eslint-disable no-use-before-define */
+const ESC_KEY_CODE = 27;
 const POST_ERROR_MESSAGE = 'При отправке данных произошла ошибка. Попробуйте позже.';
 const POST_SUCCES_MESSAGE = 'всё ок';
 const errorMessageBlock = document.querySelector('#error').content.querySelector('.error');
@@ -12,7 +13,7 @@ const addPostErrorMessage = () => {
 
   const onBtnCloseErrorModal = () => closeErrorPopup();
   const onEscCloseErrorModal = (evt) => {
-    if (evt.keyCode === 27) {
+    if (evt.keyCode === ESC_KEY_CODE) {
       closeErrorPopup();
     }
   };
@@ -32,7 +33,7 @@ const addPostSuccessMessage = () => {
 
   const onBtnCloseModal = () => closePopup();
   const onEscCloseModal = (evt) => {
-    if (evt.keyCode === 27) {
+    if (evt.keyCode === ESC_KEY_CODE) {
       closePopup();
     }
   };

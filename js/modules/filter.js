@@ -8,6 +8,8 @@ const housingRoom = mapFilter.querySelector('#housing-rooms');
 const housingGuest = mapFilter.querySelector('#housing-guests');
 const housingFeature = mapFilter.querySelector('#housing-features');
 
+const FEATURES_SPLIT_ELEMENT = 'filter-';
+
 const prices = {
   'any': [0, MAX_PRICE],
   'middle': [10000, 50000],
@@ -40,7 +42,7 @@ const inputsFeature = housingFeature.querySelectorAll('input');
 // список features из инпутов
 const getCheckedFeatures = () => {
   // возвращет имя фильтра или NaN, если тот не выбран:
-  const checkOneFilter = (filter) => filter.checked ? filter.id.split('filter-')[1] : NaN;
+  const checkOneFilter = (filter) => filter.checked ? filter.id.split(FEATURES_SPLIT_ELEMENT)[1] : NaN;
   return Array.from(inputsFeature)
     .map((filter) => checkOneFilter(filter))
     .filter((filter) => filter);

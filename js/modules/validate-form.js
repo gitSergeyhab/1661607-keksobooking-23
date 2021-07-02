@@ -18,6 +18,13 @@ const roomsAndGuests = {
   '100': ['0'],
 };
 
+const validationMessages = {
+  characters: 'символов',
+  tooFew: 'нужно еще',
+  tooMany: 'удалите',
+  minPrice: 'минимальная цена',
+  maxPrice: 'максимальная цена',
+};
 
 const formField = document.querySelector('.ad-form');
 const titleField = formField.querySelector('#title');
@@ -77,23 +84,26 @@ const validateForm = () => {
   });
 
   titleField.addEventListener('input', () => {
+    const {tooFew, tooMany, characters} = validationMessages;
     if (titleField.value.length < MIN_LEN_TITLE) {
-      titleField.setCustomValidity(`нужно еще ${MIN_LEN_TITLE - titleField.value.length} символов`);
+      titleField.setCustomValidity(`${tooFew} ${MIN_LEN_TITLE - titleField.value.length} ${characters}`);
     } else if (titleField.value.length > MAX_LEN_TITLE) {
-      titleField.setCustomValidity(`удалите ${titleField.value.length - MAX_LEN_TITLE} символов`);
+      titleField.setCustomValidity(`${tooMany} ${titleField.value.length - MAX_LEN_TITLE} ${characters}`);
     } else {
       titleField.setCustomValidity('');
+      titleField.style.border = '';
     }
     titleField.reportValidity();
   });
 
   priceField.addEventListener('input', () => {
     if (priceField.value < getMinPrise()) {
-      priceField.setCustomValidity(`минимальная цена ${getMinPrise()}`);
+      priceField.setCustomValidity(`${validationMessages.minPrice} ${getMinPrise()}`);
     } else if (priceField.value > MAX_PRICE){
-      priceField.setCustomValidity(`максимальная цена ${MAX_PRICE}`);
+      priceField.setCustomValidity(`${validationMessages.minPrice} ${MAX_PRICE}`);
     } else {
       priceField.setCustomValidity('');
+      priceField.style.border = '';
     }
     priceField.reportValidity();
   });

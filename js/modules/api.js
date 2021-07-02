@@ -31,7 +31,7 @@ const postData = (url, form) => {
         // console.log(response);
         return response.json(); // ??? а что с ответом-то делать ???
       } else {
-        throw new Error('something wrong...');
+        throw new Error('completely useless magic string)');
       }
     });
 };
