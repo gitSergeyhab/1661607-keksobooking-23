@@ -40,11 +40,4 @@ const resetFormsAndMap = () => {
 const onResetReset = () => resetFormsAndMap();
 const onSubmitReset = () => resetFormsAndMap();
 
-// обработчик кнопки сброса
-const resetByReset = () => btnReset.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  onResetReset();
-});
-
-
-export {removeMarkersByFilter, resetByReset, onSubmitReset, btnReset};
+export {removeMarkersByFilter, onSubmitReset, onResetReset, btnReset};

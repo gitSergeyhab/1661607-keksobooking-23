@@ -1,22 +1,11 @@
-import {addPostErrorMessage} from './add-post-error-message.js';
-import {formField} from './validate-form.js';
+import {addPostSuccessMessage, addMessage} from './message.js';
 import {createMarkerGroup} from './map.js';
-import {getNeedPoints, mapFilter} from './filter.js';
-import {btnReset} from './add-listeners-forms-map.js';
+import {getNeedPoints} from './filter.js';
+
 
 const GET_ERROR_MESSAGE = 'Данные не загрузились, попробуте позже.';
-const GET_SUCCESS_MESSAGE = 'Данные успешно отправдены.';
 const COLOR_ERROR = 'red';
-const COLOR_SUCCESS = 'green';
-
 const TIME_MESSAGE_REMOVE = 2500;
-
-const addMessage = (color, element, text) => {
-  const errorMessage = document.createElement('h3');
-  errorMessage.innerHTML = `<span style="color: ${color}; text-transform: uppercase">${text}</span>`;
-  element.before(errorMessage);
-  setTimeout(() => errorMessage.remove(), TIME_MESSAGE_REMOVE);
-};
 
 const getData = (url, MessageElement) => {
   fetch(url)
@@ -24,25 +13,11 @@ const getData = (url, MessageElement) => {
       if (response.ok) {
         return response.json();
       }})
-    .then((response) => {
-      // отрисовать точки сразу и ...
-      createMarkerGroup(getNeedPoints(response));
-
-      //...создать листенеры для createMarkerGroup при change на фильтрах/клик на ресете/сабмит на отправке :
-      mapFilter.addEventListener('change', () => createMarkerGroup(getNeedPoints(response)));
-      btnReset.addEventListener('click', () => createMarkerGroup(getNeedPoints(response)));
-      // {
-      //   setTimeout(() => createMarkerGroup(getNeedPoints(response)), 0); // чтобы успели сбросится формы-фильтры
-      // });
-      formField.addEventListener('submit', () => createMarkerGroup(getNeedPoints(response)));
-      // {
-      //   setTimeout(() => createMarkerGroup(getNeedPoints(response)), 0);
-      // });
-    } )
-    .catch(() => addMessage(COLOR_ERROR, MessageElement, GET_ERROR_MESSAGE));
+    .then((response) => createMarkerGroup(getNeedPoints(response)))
+    .catch(() => addMessage(COLOR_ERROR, MessageElement, GET_ERROR_MESSAGE, TIME_MESSAGE_REMOVE));
 };
 
-const postData = (url, form, MessageElement) => {
+const postData = (url, form) => {
 
   const formData = new FormData(form);
 
@@ -52,13 +27,13 @@ const postData = (url, form, MessageElement) => {
   })
     .then((response) => {
       if (response.ok) {
-        addMessage(COLOR_SUCCESS, MessageElement, GET_SUCCESS_MESSAGE);
-        form.reset();
+        addPostSuccessMessage();
+        // console.log(response);
+        return response.json(); // ??? а что с ответом-то делать ???
       } else {
-        addPostErrorMessage();
+        throw new Error('something wrong...');
       }
-    })
-    .catch(() => addPostErrorMessage());
+    });
 };
 
 export {getData, postData};
