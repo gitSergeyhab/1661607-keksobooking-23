@@ -3,6 +3,8 @@ import {mapFilter} from './filter.js';
 import {formField} from './validate-form.js';
 import {getCoordinate, map, mainMarker, address} from './map.js';
 import {tokyoCoordinate} from './setup.js';
+import {debounce} from '../utils/debounce.js';
+
 
 const btnReset = formField.querySelector('.ad-form__reset');
 
@@ -12,9 +14,9 @@ const removeMarkersByFilter = (markerGroup) => {
   const onResetToGroupDel = () => removeMarkerGroup();
   const onChangeFormToGroupDel = () => removeMarkerGroup();
 
-  mapFilter.addEventListener('change', onChangeFormToGroupDel);
-  formField.addEventListener('submit', onSubmitToGroupDel);
-  btnReset.addEventListener('click', onResetToGroupDel);
+  mapFilter.addEventListener('change', debounce(onChangeFormToGroupDel));
+  formField.addEventListener('submit', debounce(onSubmitToGroupDel));
+  btnReset.addEventListener('click', debounce(onResetToGroupDel));
 
   function removeMarkerGroup() {
     markerGroup.remove();

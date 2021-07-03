@@ -6,7 +6,8 @@ import {onSubmitReset, onResetReset} from './modules/add-listeners-forms-map.js'
 import {mapFilter} from './modules/filter.js';
 import {btnReset} from './modules/add-listeners-forms-map.js';
 import {onPostSuccess, onPostError, onGetError} from './modules/message.js';
-import { showPromoAvatar, showPromoImages } from './modules/show-promo.js';
+import {showPromoAvatar, showPromoImages} from './modules/show-promo.js';
+import {debounce} from './utils/debounce.js';
 
 
 disableFormsCondition();
@@ -17,14 +18,14 @@ validateForm();
 
 getData(onSuccessGet, onGetError); //отрисовка при загрузке
 
-mapFilter.addEventListener('change', () => getData(onSuccessGet, onGetError)); // обработчик на фильтры
+mapFilter.addEventListener('change', debounce(() => getData(onSuccessGet, onGetError))); // обработчик на фильтры
 
 // обработчик на кнопку сброса
-btnReset.addEventListener('click', (evt) => {
+btnReset.addEventListener('click', debounce((evt) => {
   evt.preventDefault(); // чтоб не сбрасывалась строка адреса
   onResetReset();
   getData(onSuccessGet, onGetError);
-});
+}));
 
 // обработчик на кнопку отправки
 formField.addEventListener('submit', (evt) =>  {
