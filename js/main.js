@@ -1,20 +1,13 @@
 import {disableFormsCondition} from './modules/change-form-condition.js';
 import {validateForm, formField} from './modules/validate-form.js';
-import {getData, postData} from './modules/api.js';
+import {getData, postData, onSuccessGet} from './modules/api.js';
 import {loadMap} from './modules/map.js';
 import {onSubmitReset, onResetReset} from './modules/add-listeners-forms-map.js';
-
 import {mapFilter} from './modules/filter.js';
 import {btnReset} from './modules/add-listeners-forms-map.js';
-
-import {addPostErrorMessage} from './modules/message.js';
+import {onPostSuccess, onPostError, onGetError} from './modules/message.js';
 import { showPromoAvatar, showPromoImages } from './modules/show-promo.js';
 
-
-const URL_GET_DATA = 'https://23.javascript.pages.academy/keksobooking/data';
-const URL_POST_DATA = 'https://23.javascript.pages.academy/keksobooking';
-
-const mapBlock = document.querySelector('.map');
 
 disableFormsCondition();
 
@@ -22,22 +15,22 @@ loadMap();
 
 validateForm();
 
-getData(URL_GET_DATA, mapBlock);
+getData(onSuccessGet, onGetError); //отрисовка при загрузке
 
-mapFilter.addEventListener('change', () => getData(URL_GET_DATA, mapBlock));
+mapFilter.addEventListener('change', () => getData(onSuccessGet, onGetError)); // обработчик на фильтры
 
+// обработчик на кнопку сброса
 btnReset.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  getData(URL_GET_DATA, mapBlock);
+  evt.preventDefault(); // чтоб не сбрасывалась строка адреса
   onResetReset();
+  getData(onSuccessGet, onGetError);
 });
 
+// обработчик на кнопку отправки
 formField.addEventListener('submit', (evt) =>  {
   evt.preventDefault();
-  postData(URL_POST_DATA, formField)
-    .then(onSubmitReset)
-    .catch(addPostErrorMessage)
-    .finally(() => getData(URL_GET_DATA, mapBlock)); // точки рисую в любом случае
+  postData(formField, onPostSuccess, onPostError, onSubmitReset)
+    .finally(() => getData(onSuccessGet, onGetError)); // точки рисую в любом случае
 });
 
 showPromoAvatar();
