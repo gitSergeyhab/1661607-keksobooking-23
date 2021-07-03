@@ -1,13 +1,14 @@
 /* eslint-disable no-use-before-define */
 
-import {tokyoCoordinate, AFTER_POINT} from './data.js';
+import {tokyoCoordinate, AFTER_POINT} from './setup.js';
 import {disableFormsCondition} from './change-form-condition.js';
 import {createNewCard} from './create-new-card.js';
 import {removeMarkersByFilter} from './add-listeners-forms-map.js';
+import {getRaitByFeatures} from './filter-option.js';
 
 const openStreetMapTile = {
   png: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  contributors: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 };
 
 // словарь иконок
@@ -54,7 +55,7 @@ const loadMap = () => {
 
   L.tileLayer(
     openStreetMapTile.png, {
-      attribution: openStreetMapTile.contributors,
+      attribution: openStreetMapTile.attribution,
     },
   ).addTo(map);
 
@@ -71,6 +72,7 @@ const loadMap = () => {
 const createMarkerGroup = (points) => {
   const markerGroup = L.layerGroup().addTo(map);
   const generateMarker = (point) => {
+    getRaitByFeatures(point);
     const {location: {lat,lng}} = point;
     const marker = L.marker({
       lat,

@@ -1,5 +1,7 @@
 import {formField} from './validate-form.js';
 
+const IMG_SIZE = '70';
+
 const avatarInput = formField.querySelector('#avatar');
 const avatarPreview = formField.querySelector('.ad-form-header__preview img');
 const imagesInput = formField.querySelector('#images');
@@ -28,8 +30,8 @@ const showPromoImages = () => {
       const div =  imagesPreview.cloneNode(true);
       const img = document.createElement('img');
       img.src = result;
-      img.width = '70';
-      img.height = '70';
+      img.width = IMG_SIZE;
+      img.height = IMG_SIZE;
       div.append(img);
       imgContainer.append(div);
     };

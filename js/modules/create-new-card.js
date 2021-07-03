@@ -1,18 +1,17 @@
 const cardTemplate = document.querySelector('#card').content.querySelector('article');
 
+const types = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель',
+};
+
 const createNewCard = ({
   author: {avatar},
   offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos},
 }) => {
-
-  const types = {
-    flat: 'Квартира',
-    bungalow: 'Бунгало',
-    house: 'Дом',
-    palace: 'Дворец',
-    hotel: 'Отель',
-  };
-
   const card = cardTemplate.cloneNode(true);
 
   const showBlock = (selector, content, showMarker) => {

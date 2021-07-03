@@ -1,6 +1,7 @@
+import {MAX_PRICE} from './setup.js';
+
 const MAX_LEN_TITLE = 100;
 const MIN_LEN_TITLE = 30;
-const MAX_PRICE = 1000000;
 const ERROR_BORDER = '4px solid red';
 
 const typeAndPrice = {
