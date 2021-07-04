@@ -6,7 +6,7 @@ import {onSubmitReset, onResetReset} from './modules/add-listeners-forms-map.js'
 import {mapFilter} from './modules/filter.js';
 import {btnReset} from './modules/add-listeners-forms-map.js';
 import {onPostSuccess, onPostError, onGetError} from './modules/message.js';
-import {showPromoAvatar, showPromoImages} from './modules/show-promo.js';
+import {showPromoAvatar, showPromoImages, clearImagesFields} from './modules/show-promo.js';
 import {debounce} from './utils/debounce.js';
 
 
@@ -18,19 +18,19 @@ validateForm();
 
 getData(onSuccessGet, onGetError); //отрисовка при загрузке
 
-mapFilter.addEventListener('change', debounce(() => getData(onSuccessGet, onGetError))); // обработчик на фильтры
+// обработчики на фильтры, кнопку сброса, кнопку отправки:
+mapFilter.addEventListener('change', debounce(() => getData(onSuccessGet, onGetError)));
 
-// обработчик на кнопку сброса
 btnReset.addEventListener('click', debounce((evt) => {
   evt.preventDefault(); // чтоб не сбрасывалась строка адреса
   onResetReset();
-  getData(onSuccessGet, onGetError);
+  getData(onSuccessGet, onGetError)
+    .finally(clearImagesFields);
 }));
 
-// обработчик на кнопку отправки
 formField.addEventListener('submit', (evt) =>  {
   evt.preventDefault();
-  postData(formField, onPostSuccess, onPostError, onSubmitReset)
+  postData(formField, onPostSuccess, onPostError, onSubmitReset, clearImagesFields)
     .finally(() => getData(onSuccessGet, onGetError)); // точки рисую в любом случае
 });
 

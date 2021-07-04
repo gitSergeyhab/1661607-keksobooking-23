@@ -6,6 +6,8 @@ import {createNewCard} from './create-new-card.js';
 import {removeMarkersByFilter} from './add-listeners-forms-map.js';
 import {getRaitByFeatures} from './filter-option.js';
 
+const SCALE = 13;
+
 const openStreetMapTile = {
   png: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -51,7 +53,7 @@ const loadMap = () => {
     .setView({
       lat: tokyoCoordinate.lat,
       lng: tokyoCoordinate.lng,
-    }, 12);
+    }, SCALE);
 
   L.tileLayer(
     openStreetMapTile.png, {
@@ -91,6 +93,5 @@ const createMarkerGroup = (points) => {
   // // создать и удалить листенеры формы для markerGroup.remove() при change на фильтрах
   removeMarkersByFilter(markerGroup);
 };
-
 
 export {loadMap, createMarkerGroup, getCoordinate, map, mainMarker, address};

@@ -1,6 +1,7 @@
 import {formField} from './validate-form.js';
 
 const IMG_SIZE = '70';
+const AVATAR_IMG_DEFAULT = 'img/muffin-grey.svg';
 
 const avatarInput = formField.querySelector('#avatar');
 const avatarPreview = formField.querySelector('.ad-form-header__preview img');
@@ -17,16 +18,20 @@ const showPromoAvatar = () => {
   });
 };
 
+const clearImages = () => {
+  Array.from(imgContainer.children).forEach((div) => {
+    if (div.classList.contains('ad-form__photo')) {
+      div.remove();
+    }
+  });
+};
+
 const showPromoImages = () => {
   imagesInput.addEventListener('change', (evt) => {
     // очищает предыдущий change
-    Array.from(imgContainer.children).forEach((div) => {
-      if (div.classList.contains('ad-form__photo')) {
-        div.remove();
-      }
-    });
+    clearImages();
     // для кажкого файла - див с картинкой
-    const onLoadAppendImg = (result) => {
+    const addDivImg = (result) => {
       const div =  imagesPreview.cloneNode(true);
       const img = document.createElement('img');
       img.src = result;
@@ -40,9 +45,14 @@ const showPromoImages = () => {
     Array.from(imgFiles).forEach((file) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.addEventListener('load', (readerEvt) => onLoadAppendImg(readerEvt.target.result));
+      reader.addEventListener('load', (readerEvt) => addDivImg(readerEvt.target.result));
     });
   });
 };
 
-export {showPromoAvatar, showPromoImages};
+const clearImagesFields = () => {
+  avatarPreview.src = AVATAR_IMG_DEFAULT;
+  clearImages();
+};
+
+export {showPromoAvatar, showPromoImages, clearImagesFields};

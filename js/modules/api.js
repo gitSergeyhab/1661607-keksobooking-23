@@ -18,23 +18,21 @@ const getData = (onSuccess, onError) => (
     .catch(onError)
 );
 
-const postData = (form, onSuccess, onError, onReset) => {
-  const formData = new FormData(form);
-
-  return fetch(urls.post, {
+const postData = (form, onSuccess, onError, onReset, clearImg) => (
+  fetch(urls.post, {
     method: 'post',
-    body: formData,
+    body: new FormData(form),
   })
     .then((response) => {
       if (response.ok) {
         return response.json();
-      } else {
-        throw new Error('completely useless magic string');
       }
+      throw new Error(response.statusText);
     })
     .then(onSuccess)
+    .then(clearImg)
     .then(onReset)
-    .catch(onError);
-};
+    .catch(onError)
+);
 
 export {getData, postData, onSuccessGet};

@@ -10,20 +10,20 @@ const btnReset = formField.querySelector('.ad-form__reset');
 
 // создать и удалить листенеры формы для markerGroup.remove() при change... на фильтрах
 const removeMarkersByFilter = (markerGroup) => {
-  const onSubmitToGroupDel = () => removeMarkerGroup();
-  const onResetToGroupDel = () => removeMarkerGroup();
-  const onChangeFormToGroupDel = () => removeMarkerGroup();
+  const onPostSubmit = () => removeMarkerGroup();
+  const onResetClick = () => removeMarkerGroup();
+  const onFiltersChange = () => removeMarkerGroup();
 
-  mapFilter.addEventListener('change', debounce(onChangeFormToGroupDel));
-  formField.addEventListener('submit', debounce(onSubmitToGroupDel));
-  btnReset.addEventListener('click', debounce(onResetToGroupDel));
+  mapFilter.addEventListener('change', debounce(onFiltersChange));
+  formField.addEventListener('submit', debounce(onPostSubmit));
+  btnReset.addEventListener('click', debounce(onResetClick));
 
   function removeMarkerGroup() {
     markerGroup.remove();
 
-    mapFilter.removeEventListener('change', onChangeFormToGroupDel);
-    formField.removeEventListener('submit', onSubmitToGroupDel);
-    btnReset.removeEventListener('click', onResetToGroupDel);
+    mapFilter.removeEventListener('change', onFiltersChange);
+    formField.removeEventListener('submit', onPostSubmit);
+    btnReset.removeEventListener('click', onResetClick);
   }
 };
 

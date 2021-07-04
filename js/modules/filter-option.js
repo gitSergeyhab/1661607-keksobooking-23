@@ -41,5 +41,4 @@ const getRaitByFeatures = ({offer: {features = []}}) => {
   return rait;
 };
 
-
 export {getCheckedFeatures, filterFeature, getRaitByFeatures};

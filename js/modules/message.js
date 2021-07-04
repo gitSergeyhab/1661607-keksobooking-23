@@ -16,19 +16,19 @@ const onPostError = () => {
 
   const errorButton = errorMessageBlock.querySelector('.error__button');
 
-  const onBtnCloseErrorModal = () => closeErrorPopup();
-  const onEscCloseErrorModal = (evt) => {
+  const onBtnCloseClick = () => closeErrorPopup();
+  const onEscKeydown = (evt) => {
     if (evt.keyCode === ESC_KEY_CODE) {
       closeErrorPopup();
     }
   };
 
-  errorButton.addEventListener('click', onBtnCloseErrorModal);
-  document.addEventListener('keydown', onEscCloseErrorModal);
+  errorButton.addEventListener('click', onBtnCloseClick);
+  document.addEventListener('keydown', onEscKeydown);
 
   function closeErrorPopup() {
     errorMessageBlock.remove();
-    document.removeEventListener('keydown', onBtnCloseErrorModal);
+    document.removeEventListener('keydown', onEscKeydown);
   }
 };
 
@@ -36,20 +36,20 @@ const onPostSuccess = () => {
   successMessageBlock.querySelector('.success__message').textContent = MESSAGE_POST_SUCCESS;
   document.body.append(successMessageBlock);
 
-  const onBtnCloseModal = () => closePopup();
-  const onEscCloseModal = (evt) => {
+  const onBtnCloseClick = () => closePopup();
+  const onEscKeydown = (evt) => {
     if (evt.keyCode === ESC_KEY_CODE) {
       closePopup();
     }
   };
 
-  document.addEventListener('click', onBtnCloseModal);
-  document.addEventListener('keydown', onEscCloseModal);
+  document.addEventListener('click', onBtnCloseClick);
+  document.addEventListener('keydown', onEscKeydown);
 
   function closePopup() {
     successMessageBlock.remove();
-    document.removeEventListener('click', onBtnCloseModal);
-    document.removeEventListener('keydown', onBtnCloseModal);
+    document.removeEventListener('click', onBtnCloseClick);
+    document.removeEventListener('keydown', onEscKeydown);
   }
 };
 
