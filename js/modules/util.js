@@ -16,3 +16,18 @@
 // };
 
 // export {getRandomInt, getRandomNumber};
+const btnCondiionColor = {
+  enable: 'white',
+  disable: 'black',
+};
+
+const changeBtnCondiion = (btn, activize = false) => {
+  activize ?
+    btn.removeAttribute('disabled') :
+    setTimeout(() => btn.setAttribute('disabled', true), 0);// задержка, чтоб отправить форму до блокировки кнопки
+  btn.style.backgroundColor = activize ?
+    btnCondiionColor.enable :
+    btnCondiionColor.disable;
+};
+
+export {changeBtnCondiion};

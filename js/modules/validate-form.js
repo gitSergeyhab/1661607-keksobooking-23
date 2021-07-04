@@ -1,4 +1,6 @@
 import {MAX_PRICE} from './setup.js';
+import {changeBtnCondiion} from './util.js';
+
 
 const MAX_LEN_TITLE = 100;
 const MIN_LEN_TITLE = 30;
@@ -36,6 +38,7 @@ const timein = formField.querySelector('#timein');
 const timeout = formField.querySelector('#timeout');
 const capacity = formField.querySelector('#capacity');
 const optionCapacitys = capacity.querySelectorAll('option');
+const submitBtn = formField.querySelector('.ad-form__submit');
 
 const validateForm = () => {
   const getMinPrise = () => typeAndPrice[typeField.value];
@@ -110,7 +113,10 @@ const validateForm = () => {
   });
 
   //а неверно заполненные поля подсвечиваются красной рамкой.
-  formField.querySelector('.ad-form__submit').addEventListener('click', () => {
+  submitBtn.addEventListener('click', () => {
+    if (formField.checkValidity()) {
+      changeBtnCondiion(submitBtn);
+    }
     const inputs = formField.querySelectorAll('input:not(#address)');
     inputs.forEach((input) => {
       input.style.border = input.checkValidity() ? '' : ERROR_BORDER;
@@ -121,4 +127,4 @@ const validateForm = () => {
   addTimesListener(timeout, timein);
 };
 
-export {validateForm, formField};
+export {validateForm, formField, submitBtn};

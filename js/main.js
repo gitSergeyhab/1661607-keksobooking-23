@@ -1,5 +1,5 @@
 import {disableFormsCondition} from './modules/change-form-condition.js';
-import {validateForm, formField} from './modules/validate-form.js';
+import {validateForm, formField, submitBtn} from './modules/validate-form.js';
 import {getData, postData, onSuccessGet} from './modules/api.js';
 import {loadMap} from './modules/map.js';
 import {onSubmitReset, onResetReset} from './modules/add-listeners-forms-map.js';
@@ -8,6 +8,7 @@ import {btnReset} from './modules/add-listeners-forms-map.js';
 import {onPostSuccess, onPostError, onGetError} from './modules/message.js';
 import {showPromoAvatar, showPromoImages, clearImagesFields} from './modules/show-promo.js';
 import {debounce} from './utils/debounce.js';
+import {changeBtnCondiion} from './modules/util.js';
 
 
 disableFormsCondition();
@@ -31,7 +32,10 @@ btnReset.addEventListener('click', debounce((evt) => {
 formField.addEventListener('submit', (evt) =>  {
   evt.preventDefault();
   postData(formField, onPostSuccess, onPostError, onSubmitReset, clearImagesFields)
-    .finally(() => getData(onSuccessGet, onGetError)); // точки рисую в любом случае
+    .finally(() => {
+      getData(onSuccessGet, onGetError); // в любом случае рисую точки...
+      changeBtnCondiion(submitBtn, true); // ...и убираю disabled с кнопки
+    });
 });
 
 showPromoAvatar();

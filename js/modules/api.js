@@ -6,6 +6,7 @@ const urls = {
   post: 'https://23.javascript.pages.academy/keksobooking',
 };
 
+
 const onSuccessGet = (response) => createMarkerGroup(getNeedPoints(response));
 
 const getData = (onSuccess, onError) => (
