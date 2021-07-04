@@ -22,7 +22,7 @@ const getData = (onSuccess, onError) => (
 const postData = (form, onSuccess, onError, onReset, clearImg) => (
   fetch(urls.post, {
     method: 'post',
-    body: new FormData(),
+    body: new FormData(form),
   })
     .then((response) => {
       if (response.ok) {
