@@ -10,36 +10,15 @@ const errorMessageBlock = document.querySelector('#error').content.querySelector
 const successMessageBlock = document.querySelector('#success').content.querySelector('.success');
 const mapBlock = document.querySelector('.map');
 
-const showPostError = () => {
-  errorMessageBlock.querySelector('.error__message').textContent = MESSAGE_POST_ERROR;
-  document.body.append(errorMessageBlock);
 
-  const errorButton = errorMessageBlock.querySelector('.error__button');
+const showPost = (messageBlock, selectorMessage, MESSAGE, selectorBtn) => {
+  messageBlock.querySelector(selectorMessage).textContent = MESSAGE;
+  document.body.append(messageBlock);
 
-  const onAnythingClick = () => closeErrorPopup();
-  const onBtnCloseClick = () => closeErrorPopup();
-  const onEscKeydown = (evt) => {
-    if (evt.keyCode === ESC_KEY_CODE) {
-      closeErrorPopup();
-    }
-  };
-
-  document.addEventListener('click', onAnythingClick);
-  errorButton.addEventListener('click', onBtnCloseClick);
-  document.addEventListener('keydown', onEscKeydown);
-
-  function closeErrorPopup() {
-    errorMessageBlock.remove();
-    document.removeEventListener('keydown', onEscKeydown);
-    document.removeEventListener('click', onAnythingClick);
-  }
-};
-
-const showPostSuccess = () => {
-  successMessageBlock.querySelector('.success__message').textContent = MESSAGE_POST_SUCCESS;
-  document.body.append(successMessageBlock);
+  const errorButton = selectorBtn ? messageBlock.querySelector(selectorBtn) : null;
 
   const onAnythingClick = () => closePopup();
+  const onBtnCloseClick = () => closePopup();
   const onEscKeydown = (evt) => {
     if (evt.keyCode === ESC_KEY_CODE) {
       closePopup();
@@ -48,13 +27,17 @@ const showPostSuccess = () => {
 
   document.addEventListener('click', onAnythingClick);
   document.addEventListener('keydown', onEscKeydown);
+  selectorBtn ? errorButton.addEventListener('click', onBtnCloseClick) : null;
 
   function closePopup() {
-    successMessageBlock.remove();
-    document.removeEventListener('click', onAnythingClick);
+    messageBlock.remove();
     document.removeEventListener('keydown', onEscKeydown);
+    document.removeEventListener('click', onAnythingClick);
   }
 };
+
+const showPostError = () => showPost(errorMessageBlock, '.error__message', MESSAGE_POST_ERROR, '.error__button');
+const showPostSuccess = () => showPost(successMessageBlock, '.success__message', MESSAGE_POST_SUCCESS);
 
 const showGetError = () => {
   const errorMessage = document.createElement('h3');
