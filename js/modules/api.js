@@ -7,7 +7,7 @@ const urls = {
 };
 
 
-const onSuccessGet = (response) => createMarkerGroup(getNeedPoints(response));
+const loadMarkers = (response) => createMarkerGroup(getNeedPoints(response));
 
 const getData = (onSuccess, onError) => (
   fetch(urls.get)
@@ -22,7 +22,7 @@ const getData = (onSuccess, onError) => (
 const postData = (form, onSuccess, onError, onReset, clearImg) => (
   fetch(urls.post, {
     method: 'post',
-    body: new FormData(form),
+    body: new FormData(),
   })
     .then((response) => {
       if (response.ok) {
@@ -36,4 +36,4 @@ const postData = (form, onSuccess, onError, onReset, clearImg) => (
     .catch(onError)
 );
 
-export {getData, postData, onSuccessGet};
+export {getData, postData, loadMarkers};

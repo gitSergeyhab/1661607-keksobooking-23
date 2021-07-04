@@ -48,7 +48,4 @@ const resetFormsAndMap = () => {
   */
 };
 
-const onResetReset = () => resetFormsAndMap();
-const onSubmitReset = () => resetFormsAndMap();
-
-export {removeMarkersByFilter, onSubmitReset, onResetReset, btnReset};
+export {removeMarkersByFilter, resetFormsAndMap, btnReset};

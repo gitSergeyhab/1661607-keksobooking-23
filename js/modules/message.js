@@ -10,12 +10,13 @@ const errorMessageBlock = document.querySelector('#error').content.querySelector
 const successMessageBlock = document.querySelector('#success').content.querySelector('.success');
 const mapBlock = document.querySelector('.map');
 
-const onPostError = () => {
+const showPostError = () => {
   errorMessageBlock.querySelector('.error__message').textContent = MESSAGE_POST_ERROR;
   document.body.append(errorMessageBlock);
 
   const errorButton = errorMessageBlock.querySelector('.error__button');
 
+  const onAnythingClick = () => closeErrorPopup();
   const onBtnCloseClick = () => closeErrorPopup();
   const onEscKeydown = (evt) => {
     if (evt.keyCode === ESC_KEY_CODE) {
@@ -23,41 +24,43 @@ const onPostError = () => {
     }
   };
 
+  document.addEventListener('click', onAnythingClick);
   errorButton.addEventListener('click', onBtnCloseClick);
   document.addEventListener('keydown', onEscKeydown);
 
   function closeErrorPopup() {
     errorMessageBlock.remove();
     document.removeEventListener('keydown', onEscKeydown);
+    document.removeEventListener('click', onAnythingClick);
   }
 };
 
-const onPostSuccess = () => {
+const showPostSuccess = () => {
   successMessageBlock.querySelector('.success__message').textContent = MESSAGE_POST_SUCCESS;
   document.body.append(successMessageBlock);
 
-  const onBtnCloseClick = () => closePopup();
+  const onAnythingClick = () => closePopup();
   const onEscKeydown = (evt) => {
     if (evt.keyCode === ESC_KEY_CODE) {
       closePopup();
     }
   };
 
-  document.addEventListener('click', onBtnCloseClick);
+  document.addEventListener('click', onAnythingClick);
   document.addEventListener('keydown', onEscKeydown);
 
   function closePopup() {
     successMessageBlock.remove();
-    document.removeEventListener('click', onBtnCloseClick);
+    document.removeEventListener('click', onAnythingClick);
     document.removeEventListener('keydown', onEscKeydown);
   }
 };
 
-const onGetError = () => {
+const showGetError = () => {
   const errorMessage = document.createElement('h3');
   errorMessage.innerHTML = `<span style="color: ${COLOR_ERROR}; text-transform: uppercase">${MESSAGE_GET_ERROR}</span>`;
   mapBlock.before(errorMessage);
   setTimeout(() => errorMessage.remove(), TIME_MESSAGE_REMOVE);
 };
 
-export {onPostError, onPostSuccess, onGetError};
+export {showPostSuccess, showPostError, showGetError};
