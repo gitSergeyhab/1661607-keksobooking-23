@@ -1,19 +1,27 @@
 /* eslint-disable no-use-before-define */
 
-import {tokyoCoordinate, AFTER_POINT} from './data.js';
+import {tokyoCoordinate, AFTER_POINT} from './setup.js';
 import {disableFormsCondition} from './change-form-condition.js';
 import {createNewCard} from './create-new-card.js';
 import {removeMarkersByFilter} from './add-listeners-forms-map.js';
+import {getRaitByFeatures} from './filter-option.js';
+
+const SCALE = 13;
+
+const openStreetMapTile = {
+  png: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+};
 
 // словарь иконок
 const icons = {
   mainPin: {
-    iconUrl: '../../img/main-pin.svg',
+    iconUrl: 'img/main-pin.svg',
     iconSize: [52, 52],
     iconAnchor: [26, 52],
   },
   pin: {
-    iconUrl: '../../img/pin.svg',
+    iconUrl: 'img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
   },
@@ -45,11 +53,11 @@ const loadMap = () => {
     .setView({
       lat: tokyoCoordinate.lat,
       lng: tokyoCoordinate.lng,
-    }, 12);
+    }, SCALE);
 
   L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    openStreetMapTile.png, {
+      attribution: openStreetMapTile.attribution,
     },
   ).addTo(map);
 
@@ -66,6 +74,7 @@ const loadMap = () => {
 const createMarkerGroup = (points) => {
   const markerGroup = L.layerGroup().addTo(map);
   const generateMarker = (point) => {
+    getRaitByFeatures(point);
     const {location: {lat,lng}} = point;
     const marker = L.marker({
       lat,
@@ -84,6 +93,5 @@ const createMarkerGroup = (points) => {
   // // создать и удалить листенеры формы для markerGroup.remove() при change на фильтрах
   removeMarkersByFilter(markerGroup);
 };
-
 
 export {loadMap, createMarkerGroup, getCoordinate, map, mainMarker, address};

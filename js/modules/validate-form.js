@@ -1,6 +1,9 @@
+import {MAX_PRICE} from './setup.js';
+import {changeBtnCondiion} from './util.js';
+
+
 const MAX_LEN_TITLE = 100;
 const MIN_LEN_TITLE = 30;
-const MAX_PRICE = 1000000;
 const ERROR_BORDER = '4px solid red';
 
 const typeAndPrice = {
@@ -18,6 +21,13 @@ const roomsAndGuests = {
   '100': ['0'],
 };
 
+const validationMessages = {
+  characters: 'символов',
+  tooFew: 'нужно еще',
+  tooMany: 'удалите',
+  minPrice: 'минимальная цена',
+  maxPrice: 'максимальная цена',
+};
 
 const formField = document.querySelector('.ad-form');
 const titleField = formField.querySelector('#title');
@@ -28,6 +38,7 @@ const timein = formField.querySelector('#timein');
 const timeout = formField.querySelector('#timeout');
 const capacity = formField.querySelector('#capacity');
 const optionCapacitys = capacity.querySelectorAll('option');
+const submitBtn = formField.querySelector('.ad-form__submit');
 
 const validateForm = () => {
   const getMinPrise = () => typeAndPrice[typeField.value];
@@ -77,29 +88,35 @@ const validateForm = () => {
   });
 
   titleField.addEventListener('input', () => {
+    const {tooFew, tooMany, characters} = validationMessages;
     if (titleField.value.length < MIN_LEN_TITLE) {
-      titleField.setCustomValidity(`нужно еще ${MIN_LEN_TITLE - titleField.value.length} символов`);
+      titleField.setCustomValidity(`${tooFew} ${MIN_LEN_TITLE - titleField.value.length} ${characters}`);
     } else if (titleField.value.length > MAX_LEN_TITLE) {
-      titleField.setCustomValidity(`удалите ${titleField.value.length - MAX_LEN_TITLE} символов`);
+      titleField.setCustomValidity(`${tooMany} ${titleField.value.length - MAX_LEN_TITLE} ${characters}`);
     } else {
       titleField.setCustomValidity('');
+      titleField.style.border = '';
     }
     titleField.reportValidity();
   });
 
   priceField.addEventListener('input', () => {
     if (priceField.value < getMinPrise()) {
-      priceField.setCustomValidity(`минимальная цена ${getMinPrise()}`);
+      priceField.setCustomValidity(`${validationMessages.minPrice} ${getMinPrise()}`);
     } else if (priceField.value > MAX_PRICE){
-      priceField.setCustomValidity(`максимальная цена ${MAX_PRICE}`);
+      priceField.setCustomValidity(`${validationMessages.minPrice} ${MAX_PRICE}`);
     } else {
       priceField.setCustomValidity('');
+      priceField.style.border = '';
     }
     priceField.reportValidity();
   });
 
   //а неверно заполненные поля подсвечиваются красной рамкой.
-  formField.querySelector('.ad-form__submit').addEventListener('click', () => {
+  submitBtn.addEventListener('click', () => {
+    if (formField.checkValidity()) {
+      changeBtnCondiion(submitBtn);
+    }
     const inputs = formField.querySelectorAll('input:not(#address)');
     inputs.forEach((input) => {
       input.style.border = input.checkValidity() ? '' : ERROR_BORDER;
@@ -110,4 +127,4 @@ const validateForm = () => {
   addTimesListener(timeout, timein);
 };
 
-export {validateForm, formField};
+export {validateForm, formField, submitBtn};
