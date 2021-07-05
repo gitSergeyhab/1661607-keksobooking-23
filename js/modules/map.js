@@ -1,10 +1,8 @@
 /* eslint-disable no-use-before-define */
-
 import {tokyoCoordinate, AFTER_POINT} from './setup.js';
-import {disableFormsCondition} from './change-form-condition.js';
+import {disableForms} from './form-condition.js';
 import {createNewCard} from './create-new-card.js';
-import {removeMarkersByFilter} from './add-listeners-forms-map.js';
-import {getRaitByFeatures} from './filter-option.js';
+import {removeMarkersByFilter} from './listener-forms-map.js';
 
 const SCALE = 13;
 
@@ -49,7 +47,7 @@ const mainMarker = L.marker({
 
 // загрузка карты и спецмпркера (оба уже созданы)
 const loadMap = () => {
-  map.on('load', () => disableFormsCondition(false))
+  map.on('load', () => disableForms(false))
     .setView({
       lat: tokyoCoordinate.lat,
       lng: tokyoCoordinate.lng,
@@ -74,7 +72,6 @@ const loadMap = () => {
 const createMarkerGroup = (points) => {
   const markerGroup = L.layerGroup().addTo(map);
   const generateMarker = (point) => {
-    getRaitByFeatures(point);
     const {location: {lat,lng}} = point;
     const marker = L.marker({
       lat,
@@ -90,7 +87,7 @@ const createMarkerGroup = (points) => {
   // создаем все маркеры из респонса
   points.forEach((point) => generateMarker(point));
 
-  // // создать и удалить листенеры формы для markerGroup.remove() при change на фильтрах
+  // создать и удалить листенеры формы для markerGroup.remove() при change на фильтрах
   removeMarkersByFilter(markerGroup);
 };
 

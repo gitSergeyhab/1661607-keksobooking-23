@@ -18,14 +18,14 @@ const getCheckedFeatures = () => {
 };
 
 // проверка, что в предложении есть все нужные features
-const allArrayInArray = (arrayFilter, arrayData = []) => {
+const checkAllArrayInArray = (arrayFilter, arrayData = []) => {
   // возвращает true/false - есть или нет чекнутая Feature в массиве с данными:
   const checkFilterFromFormInData = (filterForm) => arrayData.some((filterData) => filterData === filterForm);
   return arrayFilter.every((filter) => checkFilterFromFormInData(filter)); //проверяет, что есть все (каждый===true)
 };
 
 const filterFeature = (arrayData, arrayFilter) =>
-  arrayData.filter((element) => allArrayInArray(arrayFilter, element.offer.features));
+  arrayData.filter((element) => checkAllArrayInArray(arrayFilter, element.offer.features));
 
 
 // Сортировка по Features
