@@ -1,13 +1,7 @@
-import {createMarkerGroup} from './map.js';
-import {getNeedPoints} from './filter.js';
-
 const urls = {
   get: 'https://23.javascript.pages.academy/keksobooking/data',
   post: 'https://23.javascript.pages.academy/keksobooking',
 };
-
-
-const loadMarkers = (response) => createMarkerGroup(getNeedPoints(response));
 
 const getData = (onSuccess, onError) => (
   fetch(urls.get)
@@ -36,4 +30,4 @@ const postData = (form, onSuccess, onError, onReset, clearImg) => (
     .catch(onError)
 );
 
-export {getData, postData, loadMarkers};
+export {getData, postData};

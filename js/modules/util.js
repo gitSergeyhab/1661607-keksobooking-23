@@ -1,21 +1,3 @@
-// ничего в итоге не пригодилось) удаляю ?
-
-// const getMinAndMax = (first, second) => [
-//   Math.min(Math.abs(first), Math.abs(second)),
-//   Math.max(Math.abs(first), Math.abs(second)),
-// ];
-
-// const getRandomInt = (min = 1, max = 10) => {
-//   [min, max] = getMinAndMax(min, max);
-//   return Math.round(Math.random() * (max - min) + min);
-// };
-
-// const getRandomNumber = (min = 1, max = 10, afterPoint = 0) => {
-//   [min, max] = getMinAndMax(min, max);
-//   return +(Math.random() * (max - min) + min).toFixed(afterPoint);
-// };
-
-// export {getRandomInt, getRandomNumber};
 const btnCondiionColor = {
   enable: 'white',
   disable: 'black',
@@ -30,4 +12,25 @@ const changeBtnCondiion = (btn, activize = false) => {
     btnCondiionColor.disable;
 };
 
-export {changeBtnCondiion};
+// Функция взята из интернета и доработана
+// Источник - https://www.freecodecamp.org/news/javascript-debounce-example
+
+function debounce (callback, timeoutDelay = 500) {
+  // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
+  // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
+  let timeoutId;
+
+  return (...rest) => {
+    // Перед каждым новым вызовом удаляем предыдущий таймаут,
+    // чтобы они не накапливались
+    clearTimeout(timeoutId);
+
+    // Затем устанавливаем новый таймаут с вызовом колбэка на ту же задержку
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+
+    // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
+    // пока действие совершается чаще, чем переданная задержка timeoutDelay
+  };
+}
+
+export {changeBtnCondiion, debounce};

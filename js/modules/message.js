@@ -11,10 +11,10 @@ const successMessageBlock = document.querySelector('#success').content.querySele
 const mapBlock = document.querySelector('.map');
 
 
-const showPost = (messageBlock, selectorMessage, MESSAGE, selectorBtn) => {
+const showPopup = (messageBlock, selectorMessage, MESSAGE, selectorBtn) => {
   messageBlock.querySelector(selectorMessage).textContent = MESSAGE;
   document.body.append(messageBlock);
-
+  // при наличии обработчика на всем документе, смысла в этой кнопке никакого...  ??? Удалить ???
   const errorButton = selectorBtn ? messageBlock.querySelector(selectorBtn) : null;
 
   const onAnythingClick = () => closePopup();
@@ -36,8 +36,8 @@ const showPost = (messageBlock, selectorMessage, MESSAGE, selectorBtn) => {
   }
 };
 
-const showPostError = () => showPost(errorMessageBlock, '.error__message', MESSAGE_POST_ERROR, '.error__button');
-const showPostSuccess = () => showPost(successMessageBlock, '.success__message', MESSAGE_POST_SUCCESS);
+const showPostError = () => showPopup(errorMessageBlock, '.error__message', MESSAGE_POST_ERROR, '.error__button');
+const showPostSuccess = () => showPopup(successMessageBlock, '.success__message', MESSAGE_POST_SUCCESS);
 
 const showGetError = () => {
   const errorMessage = document.createElement('h3');

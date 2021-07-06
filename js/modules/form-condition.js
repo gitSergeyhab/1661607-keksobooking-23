@@ -13,9 +13,9 @@ const changeFormCondition = (formSelector,  classBlock, disable) => {
   }
 };
 
-const disableFormsCondition = (disable = true) => {
+const disableForms = (disable = true) => {
   changeFormCondition('.ad-form', CLASS_BLOCK, disable);
   changeFormCondition('.map__filters', CLASS_BLOCK, disable);
 };
 
-export {disableFormsCondition};
+export {disableForms};

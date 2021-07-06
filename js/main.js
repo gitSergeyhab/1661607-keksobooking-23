@@ -1,17 +1,19 @@
-import {disableFormsCondition} from './modules/change-form-condition.js';
+import {disableForms} from './modules/form-condition.js';
 import {validateForm, formField, submitBtn} from './modules/validate-form.js';
-import {getData, postData, loadMarkers} from './modules/api.js';
-import {loadMap} from './modules/map.js';
-import {resetFormsAndMap} from './modules/add-listeners-forms-map.js';
-import {mapFilter} from './modules/filter.js';
-import {btnReset} from './modules/add-listeners-forms-map.js';
+import {getData, postData} from './modules/api.js';
+import {loadMap, createMarkerGroup} from './modules/map.js';
+import {resetFormsAndMap} from './modules/listener-forms-map.js';
+import {mapFilter, getNeedPoints} from './modules/filter.js';
+import {btnReset} from './modules/listener-forms-map.js';
 import {showPostSuccess, showPostError, showGetError} from './modules/message.js';
-import {showPromoAvatar, showPromoImages, clearImagesFields} from './modules/show-promo.js';
-import {debounce} from './utils/debounce.js';
+import {showPromoAvatar, showPromoImages, clearImagesFields} from './modules/promo.js';
+import {debounce} from './modules/util.js';
 import {changeBtnCondiion} from './modules/util.js';
 
 
-disableFormsCondition();
+const loadMarkers = (response) => createMarkerGroup(getNeedPoints(response));
+
+disableForms();
 
 loadMap();
 
@@ -31,9 +33,7 @@ btnReset.addEventListener('click', debounce((evt) => {
 
 formField.addEventListener('submit', (evt) =>  {
   evt.preventDefault();
-  // postData(formField, onPostSuccess, onPostError, onSubmitReset, clearImagesFields)
   postData(formField, showPostSuccess, showPostError, resetFormsAndMap, clearImagesFields)
-
     .finally(() => {
       getData(loadMarkers, showGetError); // в любом случае рисую точки...
       changeBtnCondiion(submitBtn, true); // ...и убираю disabled с кнопки
