@@ -1,15 +1,15 @@
-const btnCondiionColor = {
+const btnConditionColor = {
   enable: 'white',
   disable: 'black',
 };
 
-const changeBtnCondiion = (btn, activize = false) => {
+const changeBtnCondition = (btn, activize = false) => {
   activize ?
     btn.removeAttribute('disabled') :
     setTimeout(() => btn.setAttribute('disabled', true), 0);// задержка, чтоб отправить форму до блокировки кнопки
   btn.style.backgroundColor = activize ?
-    btnCondiionColor.enable :
-    btnCondiionColor.disable;
+    btnConditionColor.enable :
+    btnConditionColor.disable;
 };
 
 // Функция взята из интернета и доработана
@@ -33,4 +33,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export {changeBtnCondiion, debounce};
+export {changeBtnCondition, debounce};

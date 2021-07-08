@@ -7,8 +7,7 @@ import {mapFilter, getNeedPoints} from './modules/filter.js';
 import {btnReset} from './modules/listener-forms-map.js';
 import {showPostSuccess, showPostError, showGetError} from './modules/message.js';
 import {showPromoAvatar, showPromoImages, clearImagesFields} from './modules/promo.js';
-import {debounce} from './modules/util.js';
-import {changeBtnCondiion} from './modules/util.js';
+import {debounce, changeBtnCondition} from './modules/util.js';
 
 
 const loadMarkers = (response) => createMarkerGroup(getNeedPoints(response));
@@ -36,7 +35,7 @@ formField.addEventListener('submit', (evt) =>  {
   postData(formField, showPostSuccess, showPostError, resetFormsAndMap, clearImagesFields)
     .finally(() => {
       getData(loadMarkers, showGetError); // в любом случае рисую точки...
-      changeBtnCondiion(submitBtn, true); // ...и убираю disabled с кнопки
+      changeBtnCondition(submitBtn, true); // ...и убираю disabled с кнопки
     });
 });
 

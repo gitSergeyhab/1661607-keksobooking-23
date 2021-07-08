@@ -29,15 +29,12 @@ const filterFeature = (arrayData, arrayFilter) =>
 
 
 // Сортировка по Features
-// рейтинг для каждого объявления за кол-во совпадений и чуть-чуть за кол-во Features
+// рейтинг для каждого объявления за кол-во совпадений
 const getRaitByFeatures = ({offer: {features = []}}) => {
   let rait = 0;
-
   getCheckedFeatures().forEach((filter) => {
     rait += features.reduce((acc, feature) => filter === feature ? acc + SCORE_FOR_MATCH : acc, 0);
   });
-
-  rait += features.length;
   return rait;
 };
 

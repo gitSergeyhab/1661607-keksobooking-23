@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import {mapFilter} from './filter.js';
 import {formField} from './validate-form.js';
 import {getCoordinate, map, mainMarker, address} from './map.js';
@@ -9,7 +8,9 @@ import {debounce} from './util.js';
 const btnReset = formField.querySelector('.ad-form__reset');
 
 // создать и удалить листенеры для markerGroup.remove() при change/submit/click на фильтрах и кнопках
+let removeMarkerGroup; // правка от наставника по критерю Д5
 const removeMarkersByFilter = (markerGroup) => {
+
   const onPostSubmit = () => removeMarkerGroup();
   const onResetClick = () => removeMarkerGroup();
   const onFiltersChange = () => removeMarkerGroup();
@@ -18,13 +19,13 @@ const removeMarkersByFilter = (markerGroup) => {
   formField.addEventListener('submit', debounce(onPostSubmit));
   btnReset.addEventListener('click', debounce(onResetClick));
 
-  function removeMarkerGroup() {
+  removeMarkerGroup = () => {
     markerGroup.remove();
 
     mapFilter.removeEventListener('change', onFiltersChange);
     formField.removeEventListener('submit', onPostSubmit);
     btnReset.removeEventListener('click', onResetClick);
-  }
+  };
 };
 
 // очищает поля и сбрасывает карту

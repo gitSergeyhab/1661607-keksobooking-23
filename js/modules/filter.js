@@ -1,6 +1,6 @@
 import {MAX_PRICE, OFFER_COUNT} from './setup.js';
-import { getRaitByFeatures} from './filter-option.js'; // для сортировки по features
-// import {getCheckedFeatures, filterFeature} from './filter-option.js'; // для фильтрации по features
+// import { getRaitByFeatures} from './filter-option.js'; // для сортировки по features
+import {getCheckedFeatures, filterFeature} from './filter-option.js'; // для фильтрации по features
 
 const mapFilter = document.querySelector('.map__filters');
 const housingType = mapFilter.querySelector('#housing-type');
@@ -41,9 +41,9 @@ const getNeedPoints = (arr) => [
   [filterPrice, housingPrice.value],
   [filterRoom, housingRoom.value],
   [filterGuest, housingGuest.value],
-  // [filterFeature, getCheckedFeatures()], // фильтрация по Features
+  [filterFeature, getCheckedFeatures()], // фильтрация по Features
 ].reduce((acc, elem) => elem[0](acc, elem[1]), arr)
-  .sort((first, second) => getRaitByFeatures(second) - getRaitByFeatures(first)) // сортировка по Features
+  // .sort((first, second) => getRaitByFeatures(second) - getRaitByFeatures(first)) // сортировка по Features
   .slice(0, OFFER_COUNT);
 
 export {getNeedPoints, mapFilter};

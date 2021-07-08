@@ -1,6 +1,6 @@
 import {formField} from './validate-form.js';
 
-const IMG_SIZE = '70';
+const IMG_SIZE = 70;
 const AVATAR_IMG_DEFAULT = 'img/muffin-grey.svg';
 
 const avatarInput = formField.querySelector('#avatar');

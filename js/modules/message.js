@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 const ESC_KEY_CODE = 27;
 const MESSAGE_POST_ERROR = 'При отправке данных произошла ошибка. Попробуйте позже.';
 const MESSAGE_POST_SUCCESS = 'всё ок';
@@ -10,11 +9,11 @@ const errorMessageBlock = document.querySelector('#error').content.querySelector
 const successMessageBlock = document.querySelector('#success').content.querySelector('.success');
 const mapBlock = document.querySelector('.map');
 
-
+let closePopup; // правка от наставника по критерю Д5
 const showPopup = (messageBlock, selectorMessage, MESSAGE, selectorBtn) => {
   messageBlock.querySelector(selectorMessage).textContent = MESSAGE;
   document.body.append(messageBlock);
-  // при наличии обработчика на всем документе, смысла в этой кнопке никакого...  ??? Удалить ???
+
   const errorButton = selectorBtn ? messageBlock.querySelector(selectorBtn) : null;
 
   const onAnythingClick = () => closePopup();
@@ -29,11 +28,11 @@ const showPopup = (messageBlock, selectorMessage, MESSAGE, selectorBtn) => {
   document.addEventListener('keydown', onEscKeydown);
   selectorBtn ? errorButton.addEventListener('click', onBtnCloseClick) : null;
 
-  function closePopup() {
+  closePopup = () => {
     messageBlock.remove();
     document.removeEventListener('keydown', onEscKeydown);
     document.removeEventListener('click', onAnythingClick);
-  }
+  };
 };
 
 const showPostError = () => showPopup(errorMessageBlock, '.error__message', MESSAGE_POST_ERROR, '.error__button');

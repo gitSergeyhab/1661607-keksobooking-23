@@ -1,5 +1,5 @@
 import {MAX_PRICE} from './setup.js';
-import {changeBtnCondiion} from './util.js';
+import {changeBtnCondition} from './util.js';
 
 
 const MAX_LEN_TITLE = 100;
@@ -115,7 +115,7 @@ const validateForm = () => {
   //а неверно заполненные поля подсвечиваются красной рамкой.
   submitBtn.addEventListener('click', () => {
     if (formField.checkValidity()) {
-      changeBtnCondiion(submitBtn);
+      changeBtnCondition(submitBtn);
     }
     const inputs = formField.querySelectorAll('input:not(#address)');
     inputs.forEach((input) => {

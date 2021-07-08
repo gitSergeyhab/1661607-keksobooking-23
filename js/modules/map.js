@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import {tokyoCoordinate, AFTER_POINT} from './setup.js';
 import {disableForms} from './form-condition.js';
 import {createNewCard} from './create-new-card.js';
@@ -28,7 +27,7 @@ const icons = {
 const address = document.querySelector('#address');
 
 // координаты в поле адреса
-const getCoordinate = (lat, lng) => `широта: ${lat.toFixed(AFTER_POINT)}  долгота: ${lng.toFixed(AFTER_POINT)}`;
+const getCoordinate = (lat, lng) => `${lat.toFixed(AFTER_POINT)}   ${lng.toFixed(AFTER_POINT)}`; // пробелы, надеюсь, можно?)
 
 // иконки
 const mainPinIcon = L.icon(icons.mainPin);
