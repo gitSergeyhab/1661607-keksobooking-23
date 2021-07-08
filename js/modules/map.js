@@ -27,7 +27,7 @@ const icons = {
 const address = document.querySelector('#address');
 
 // координаты в поле адреса
-const getCoordinate = (lat, lng) => `${lat.toFixed(AFTER_POINT)}   ${lng.toFixed(AFTER_POINT)}`; // пробелы, надеюсь, можно?)
+const getCoordinate = (lat, lng) => `${lat.toFixed(AFTER_POINT)}, ${lng.toFixed(AFTER_POINT)}`; // 4.3. Формат значения поля адреса: lat, lng
 
 // иконки
 const mainPinIcon = L.icon(icons.mainPin);
